@@ -1,0 +1,41 @@
+<?php
+
+use Inertia\Inertia;
+use Laravel\Fortify\Features;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\BHP\BHPStockController;
+use App\Http\Controllers\BHP\PeminjamanBHPController;
+use App\Http\Controllers\DataAlat\DataAlatController;
+use App\Http\Controllers\Peminjaman\PeminjamanController;
+
+Route::get('/', function () {
+    return Inertia::render('landing/pages', [
+        'canRegister' => Features::enabled(Features::registration()),
+    ]);
+})->name('home');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('dashboard', function () {
+        return Inertia::render('dashboard');
+    })->name('dashboard');
+
+    Route::resource('absensi', AbsensiController::class);
+    Route::resource('jadwal', JadwalController::class);
+    Route::resource('data-alat', DataAlatController::class);
+    Route::resource('laporan', LaporanController::class);
+    Route::resource('notifikasi', NotifikasiController::class);
+});
+
+
+Route::prefix('bahan-habis-pakai')->middleware('auth')->group(function () {
+    Route::resource('stok', BHPStockController::class)->parameters([
+        'stok' => 'bhpStock'
+    ]);
+    Route::resource('peminjaman', PeminjamanController::class);
+});
+
+require __DIR__ . '/settings.php';
