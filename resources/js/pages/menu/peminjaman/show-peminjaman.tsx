@@ -1,16 +1,17 @@
-import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
+import { useInitials } from '@/hooks/use-initials';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem, Peminjaman } from '@/types';
-import { Head } from '@inertiajs/react';
+import { BreadcrumbItem, Peminjaman, SharedData } from '@/types';
+import { Head, usePage } from '@inertiajs/react';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
+import { AlertCircleIcon } from 'lucide-react';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
+import BarangDipinjam from './components/barang-dipinjam';
+import { formatTanggalIndo } from '@/pages/helpers/helper';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -24,69 +25,72 @@ export default function ShowPeminjamanBHP({
 }: {
     peminjaman: Peminjaman;
 }) {
-    console.log(peminjaman);
-    const getColorForStatus = (status: string) => {
-        switch (status) {
-            case 'Pending':
-                return 'bg-yellow-500 text-yellow-100';
-            case 'Disetujui':
-                return 'bg-blue-500 text-blue-100';
-            case 'Ditolak':
-                return 'bg-red-500 text-red-100';
-            case 'Dikembalikan':
-                return 'bg-green-500 text-green-100';
-            default: return 'bg-neutral-800 text-white'
+    const getInitials = useInitials();
+    const { errors, flash } = usePage<SharedData>().props;
+
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            toast.error(
+                errors.status || 'Terjadi kesalahan saat memproses peminjaman.',
+            );
         }
-    };
+
+        if (flash.success) {
+            toast.success(flash.success);
+        }
+    }, [errors]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Detail Peminjaman BHP" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <div className="grid grid-cols-4 gap-4">
-                    <Card className="col-span-2">
-                        <CardHeader className="flex flex-row items-center justify-between">
-                            <CardTitle>Detail Peminjaman</CardTitle>
-                            <Badge className={getColorForStatus(peminjaman.status)}>{peminjaman.status}</Badge>
+                <div className="">
+                    <p className="text-lg font-semibold">
+                        Ringkasan Peminjaman
+                    </p>
+                    <p className="text-sm text-gray-500">
+                        {formatTanggalIndo(peminjaman.tanggal_pinjam)}
+                    </p>
+                </div>
+                {Object.keys(errors).length > 0 && (
+                    <Alert variant={'destructive'}>
+                        <AlertCircleIcon />
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>
+                            <ul className="list-inside list-disc">
+                                {Object.values(errors).map((error, index) => (
+                                    <li key={index}>{error}</li>
+                                ))}
+                            </ul>
+                        </AlertDescription>
+                    </Alert>
+                )}
+                <div className="grid lg:grid-cols-6 grid-cols-1 lg:gap-4 gap-y-4">
+                    <BarangDipinjam peminjaman={peminjaman} />
+                    <Card className="col-span-2 max-h-fit w-full">
+                        <CardHeader className="border-b pb-5 text-center text-sidebar">
+                            <CardTitle>Profil Peminjam</CardTitle>
                         </CardHeader>
-                        <CardContent>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Nama Bahan</TableHead>
-                                        <TableHead>
-                                            Jumlah yang dipinjam
-                                        </TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {peminjaman.items.map((item) => {
-                                        const currentName =
-                                            item.item_type === 'bhp'
-                                                ? item.bhp.nama_bahan
-                                                : item.alat.nama_alat;
-
-                                        const currentSatuan =
-                                            item.item_type === 'bhp'
-                                                ? item.bhp.satuan
-                                                : item.alat.satuan;
-
-                                        return (
-                                            <TableRow key={item.id}>
-                                                <TableCell>
-                                                    {currentName}
-                                                </TableCell>
-                                                <TableCell>{`${item.jumlah} ${currentSatuan}`}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardContent>
-                            <img src="" alt="" />
+                        <CardContent className="flex flex-col justify-center p-0">
+                            <div className="w-full">
+                                <Avatar className="mx-auto size-32 overflow-hidden rounded-full">
+                                    <AvatarImage
+                                        src={peminjaman.user.avatar}
+                                        alt={peminjaman.user.name}
+                                    />
+                                    <AvatarFallback className="rounded-lg bg-neutral-200 text-xl text-black dark:bg-neutral-700 dark:text-white">
+                                        {getInitials(peminjaman.user.name)}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <div className="mt-4 text-center">
+                                    <p className="truncate font-medium">
+                                        {peminjaman.user.name}
+                                    </p>
+                                    <p className="truncate text-gray-400">
+                                        {peminjaman.user.email}
+                                    </p>
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
                 </div>

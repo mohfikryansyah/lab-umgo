@@ -29,6 +29,10 @@ export interface NavItem {
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
+    flash: {
+        success?: string;
+        error?: string;
+    }
     auth: Auth;
     sidebarOpen: boolean;
     [key: string]: unknown;
@@ -51,17 +55,18 @@ export interface Peminjaman {
     user_id: number;
     user: User;
     items: PeminjamanItem[];
-    tanggal_pinjam: Date;
+    tanggal_pinjam: string;
     judul_praktikum: string;
     status: PeminjamanStatus;
     created_at: string;
     updated_at: string;
 }
 
-export type PeminjamanStatus = 'Disetujui' | 'Ditolak' | 'Pending' | 'Dikembalikan';
+export type PeminjamanStatus = 'Disetujui' | 'Ditolak' | 'Pending' | 'Selesai';
 export type PeminjamanItemKondisiKembali = 'Baik' | 'Rusak Ringan' | 'Rusak Berat';
 
 export interface PeminjamanItem {
+  id: string;
   item_type: ItemType;
   item_id: string;
   jumlah: number;
@@ -73,27 +78,20 @@ export interface PeminjamanItem {
   updated_at: string;
 }
 
-export interface PeminjamanItem {
-    id: string;
-    peminjaman_bhp_id: string;
-    bhp: BHPStock;
-    bhp_stock_id: string;
-    jumlah_pinjam: number;
-    created_at: string;
-    updated_at: string;
-}
-
 export interface Alat {
     id: string;
     nama_alat: string;
     deskripsi_alat: string;
     nomor_inventaris: string;
+    foto_alat: string;
     jumlah_stok: number;
-    kondisi_alat: 'Baik' | 'Rusak Ringan' | 'Rusak Berat';
+    kondisi_alat: KondisiAlat;
     satuan: 'Buah';
     created_at: string;
     updated_at: string;
 }
+
+export type KondisiAlat = 'Baik' | 'Rusak Ringan' | 'Rusak Berat';
 
 export interface BHPStock {
     id: string;

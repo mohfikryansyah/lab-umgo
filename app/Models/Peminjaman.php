@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusPeminjaman;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,9 @@ class Peminjaman extends Model
     protected $keyType = 'string';
     public $incrementing = false;
     protected $table = 'peminjaman';
+    protected $casts = [
+        'status' => StatusPeminjaman::class,
+    ];
 
     public function user()
     {

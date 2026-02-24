@@ -137,7 +137,7 @@ export default function PeminjamanForm({
 
     return (
         <form onSubmit={onSubmit} className="space-y-6">
-            <div className="grid w-full gap-2">
+            {/* <div className="grid w-full gap-2">
                 <Label>
                     Tanggal Pinjam
                     <Required />
@@ -196,7 +196,7 @@ export default function PeminjamanForm({
                     message={form.errors.tanggal_pinjam}
                     className="mt-2"
                 />
-            </div>
+            </div> */}
 
             <div className="grid w-full gap-2">
                 <Label>Judul Praktikum</Label>

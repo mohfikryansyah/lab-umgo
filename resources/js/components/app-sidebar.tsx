@@ -53,7 +53,7 @@ const mainNavItems: NavItem[] = [
         title: 'Bahan Habis Pakai',
         href: '#',
         icon: Boxes,
-        isActive: window.location.pathname.startsWith('/bahan-habis-pakai'),
+        isActive: window.location.pathname.startsWith('/peminjaman'),
         items: [
             {
                 title: 'Stok BHP',

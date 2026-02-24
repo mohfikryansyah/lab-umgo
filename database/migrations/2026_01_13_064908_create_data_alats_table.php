@@ -15,11 +15,14 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('nama_alat');
             $table->string('deksripsi_alat');
-            $table->integer('jumlah_stok');
-            $table->string('nomor_inventaris');
+            $table->string('foto_alat');
+            $table->string('tempat_penyimpanan');
+            $table->integer('jumlah_stok'); 
+            $table->string('nomor_inventaris')->unique();
             $table->enum('satuan', ['buah']);
             $table->enum('kondisi_alat', ['Baik', 'Rusak Ringan', 'Rusak Berat']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

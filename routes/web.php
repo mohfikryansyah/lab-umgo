@@ -28,6 +28,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('data-alat', DataAlatController::class);
     Route::resource('laporan', LaporanController::class);
     Route::resource('notifikasi', NotifikasiController::class);
+
+    Route::patch(
+        '/peminjaman/{peminjaman}/approve',
+        [PeminjamanController::class, 'handleApprove']
+    )->name('peminjaman.approve');
+
+    Route::patch(
+        '/peminjaman/{peminjaman}/decline',
+        [PeminjamanController::class, 'handleDecline']
+    )->name('peminjaman.decline');
+
+    Route::patch(
+        '/peminjaman/{peminjaman}/complete',
+        [PeminjamanController::class, 'handleComplete']
+    )->name('peminjaman.complete');
+
+    Route::resource('peminjaman', PeminjamanController::class);
 });
 
 
@@ -35,7 +52,6 @@ Route::prefix('bahan-habis-pakai')->middleware('auth')->group(function () {
     Route::resource('stok', BHPStockController::class)->parameters([
         'stok' => 'bhpStock'
     ]);
-    Route::resource('peminjaman', PeminjamanController::class);
 });
 
 require __DIR__ . '/settings.php';

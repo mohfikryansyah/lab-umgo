@@ -2,13 +2,16 @@
 
 namespace App\Services\Peminjaman;
 
-use Exception;
+use App\Enums\StatusPeminjaman;
 use App\Models\BHPStock;
 use App\Models\DataAlat;
 use App\Models\Peminjaman;
 use App\Models\PeminjamanItem;
-use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class PeminjamanService
 {
@@ -18,7 +21,7 @@ class PeminjamanService
 
             $peminjaman = Peminjaman::create([
                 'user_id' => Auth::id(),
-                'tanggal_pinjam' => $data['tanggal_pinjam'],
+                'tanggal_pinjam' => Carbon::now(),
                 'judul_praktikum' => $data['judul_praktikum'],
             ]);
 
@@ -68,5 +71,76 @@ class PeminjamanService
             'item_id' => $alat->id,
             'jumlah' => 1,
         ]);
+    }
+
+    public function approve(Peminjaman $peminjaman): void
+    {
+        DB::transaction(function () use ($peminjaman) {
+
+            $peminjaman->load('items');
+
+            if ($peminjaman->status !== StatusPeminjaman::Pending) {
+                throw ValidationException::withMessages([
+                    'status' => 'Peminjaman sudah diproses.'
+                ]);
+            }
+
+            foreach ($peminjaman->items as $item) {
+                $model = match ($item->item_type) {
+                    'alat' => DataAlat::query(),
+                    'bhp'  => BHPStock::query(),
+                    default => throw ValidationException::withMessages([
+                        'item_type' => 'Tipe item tidak valid.'
+                    ])
+                };
+
+                $stock = $model->withTrashed()->lockForUpdate()->findOrFail($item->item_id);
+
+                if ($stock->trashed()) {
+                    $nama_barang = $item->item_type === 'alat' ? $stock->nama_alat : $stock->nama_bahan;
+                    throw ValidationException::withMessages([
+                        'item' => "Tidak dapat menyetujui peminjaman karena '{$nama_barang}' sudah tidak tersedia."
+                    ]);
+                }
+
+                if ($stock->jumlah_stok < $item->jumlah) {
+                    throw ValidationException::withMessages([
+                        'stok' => "Stok {$item->item_type} tidak mencukupi."
+                    ]);
+                }
+
+                $stock->decrement('jumlah_stok', $item->jumlah);
+            }
+
+            $peminjaman->update([
+                'status' => StatusPeminjaman::Disetujui,
+            ]);
+        });
+    }
+
+    public function decline(Peminjaman $peminjaman): void
+    {
+        $peminjaman->update([
+            'status' => StatusPeminjaman::Ditolak,
+        ]);
+    }
+
+    public function complete(Peminjaman $peminjaman): void
+    {
+        DB::transaction(function () use ($peminjaman) {
+            $peminjaman->load('items');
+
+            foreach ($peminjaman->items as $item) {
+
+                if ($item->item_type !== 'alat') continue;
+
+                $stock = DataAlat::query()->lockForUpdate()->findOrFail($item->item_id);
+                $stock->increment('jumlah_stok', $item->jumlah);
+            }
+
+            $peminjaman->update([
+                'status' => StatusPeminjaman::Selesai,
+            ]);
+        });
     }
 }

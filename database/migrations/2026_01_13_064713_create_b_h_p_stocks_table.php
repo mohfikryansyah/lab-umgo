@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('tanggal_kadaluarsa');
             $table->string('supplier');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

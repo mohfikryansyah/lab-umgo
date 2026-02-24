@@ -26,11 +26,11 @@ class PeminjamanItem extends Model
 
     public function bhp()
     {
-        return $this->belongsTo(BHPStock::class, 'item_id');
+        return $this->belongsTo(BHPStock::class, 'item_id')->withTrashed();
     }
 
     public function alat()
     {
-        return $this->belongsTo(DataAlat::class, 'item_id');
+        return $this->belongsTo(DataAlat::class, 'item_id')->withTrashed();
     }
 }

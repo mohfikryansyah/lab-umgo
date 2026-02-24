@@ -14,9 +14,11 @@ import {
     Peminjaman,
     PeminjamanItem,
 } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { PeminjamanColumns } from './columns-peminjaman';
-import Create from './create-peminjaman';
+
+import { Button } from '@/components/ui/button';
+import peminjamanRoute from '@/routes/peminjaman';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -52,7 +54,11 @@ export default function PAGEPeminjaman({
                     </CardHeader>
                     <CardContent>
                         <DataTable columns={columns} data={peminjaman}>
-                            <Create bhpstocks={bhpstocks} alats={alats} />
+                            <Link href={peminjamanRoute.create()}>
+                                <Button variant={'default'}>
+                                    Buat Peminjaman
+                                </Button>
+                            </Link>
                         </DataTable>
                     </CardContent>
                 </Card>

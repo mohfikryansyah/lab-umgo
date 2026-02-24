@@ -1,13 +1,12 @@
 import { DataTable } from '@/components/datatable/data-table';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { BHPStock, BreadcrumbItem } from '@/types';
+import { BHPStock, BreadcrumbItem, PeminjamanItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { BHPStockColumns } from './columns';
 import CreateStockBHP from './create-stock-bhp';
 import PeminjamanBhpForm from '../../peminjaman/form-peminjaman';
 import { useState } from 'react';
-import { PeminjamanItem } from '@/types/interface-form';
 import Create from '../../peminjaman/create-peminjaman';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -26,11 +25,7 @@ export default function PAGEStockBHP({ bhpstocks }: { bhpstocks: BHPStock[] }) {
         label: supplier,
         value: supplier,
     }));
-
-    const [items, setItems] = useState<PeminjamanItem[]>([
-        { bhp_stock_id: '', jumlah_pinjam: 1 },
-      ]);
-
+    
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Data Bahan Habis Pakai" />

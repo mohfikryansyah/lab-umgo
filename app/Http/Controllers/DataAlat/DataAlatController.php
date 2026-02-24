@@ -14,7 +14,8 @@ class DataAlatController extends Controller
      */
     public function index()
     {
-        return Inertia::render('menu/data-alat/pages');
+        $alats = DataAlat::get();
+        return Inertia::render('menu/data-alat/pages', compact('alats'));
     }
 
     /**
@@ -22,7 +23,7 @@ class DataAlatController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('menu/data-alat/create-alat');
     }
 
     /**

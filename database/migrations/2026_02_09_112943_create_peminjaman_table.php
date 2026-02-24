@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('peminjaman', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->date('tanggal_pinjam');
+            $table->timestamp('tanggal_pinjam');
             $table->string('judul_praktikum');
-            $table->enum('status', ['Disetujui', 'Ditolak', 'Pending', 'Dikembalikan'])->default('Pending');
+            $table->enum('status', ['Disetujui', 'Ditolak', 'Pending', 'Selesai'])->default('Pending');
             $table->timestamps();
         });
     }

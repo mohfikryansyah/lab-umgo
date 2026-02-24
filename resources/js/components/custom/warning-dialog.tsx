@@ -1,45 +1,44 @@
-import { LoaderCircle, Trash2, TriangleAlert } from 'lucide-react';
+import { LoaderCircle, MessageCircleWarningIcon, Trash2, TriangleAlert } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from '../ui/dialog';
 
-type DeleteDialogProps = {
+type WarningDialogProps = {
     title: string;
     description?: string;
-    onDelete: () => void;
+    onConfirm: () => void;
     isProcessing: boolean;
-    
 };
 
-export default function DeleteDialog({ title, description, onDelete, isProcessing }: DeleteDialogProps) {
+export default function WarningDialog({ title, description, onConfirm, isProcessing }: WarningDialogProps) {
     const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
 
     return (
         <Dialog open={isOpenDialog} onOpenChange={setIsOpenDialog}>
             <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="m-0 cursor-pointer hover:bg-red-200 bg-red-100">
-                    <Trash2 className="h-4 w-4 text-red-500 " />
+                <Button variant="outline" size="sm" className="">
+                    Tolak
                 </Button>
             </DialogTrigger>
             <DialogContent className="w-full sm:max-w-106.25">
                 <div className="flex flex-col items-center justify-center">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-200">
-                        <TriangleAlert className="h-8 w-8 text-red-500" />
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-yellow-200">
+                        <TriangleAlert className="h-8 w-8 text-yellow-500" />
                     </div>
-                    <h1 className="mt-4 text-lg font-bold">{title}</h1>
-                    <p className="mt-2 text-gray-400">{description ?? 'Apakah Anda yakin ingin menghapus ini?'}</p>
+                    <h1 className="mt-4 text-lg font-bold text-center">{title}</h1>
+                    <p className="mt-2 text-gray-400 text-center">{description ?? 'Apakah Anda yakin ingin menghapus ini?'}</p>
                     <div className="mt-6 grid w-full grid-cols-2 gap-x-2">
                         <DialogClose asChild>
                             <Button variant={'outline'}>Batal</Button>
                         </DialogClose>
                         <Button
                             variant={'default'}
-                            className="bg-red-500 transition-all duration-300 hover:bg-red-600 active:scale-90"
+                            className="bg-yellow-500 transition-all duration-300 hover:bg-yellow-600 active:scale-90"
                             disabled={isProcessing}
                             onClick={() => {
-                                onDelete();
+                                onConfirm();
                             }}
-                            aria-label="Delete row"
+                            aria-label="Confirm action"
                         >
                             {isProcessing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                             Ya, saya yakin!

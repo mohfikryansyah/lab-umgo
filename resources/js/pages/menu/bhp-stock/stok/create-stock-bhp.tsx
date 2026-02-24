@@ -10,13 +10,13 @@ import {
 } from '@/components/ui/dialog';
 import useBoolean from '@/hooks/use-boolean';
 import { BreadcrumbItem } from '@/types';
-import { FormBHPStokType, SatuanFormBHPStok } from '@/types/interface-form';
 import { useForm } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { FormEventHandler } from 'react';
 import FormBHPStok from './form-stock-bhp';
 import toast from 'react-hot-toast';
 import stok from '@/routes/stok';
+import { FormBHPStokType, SatuanFormBHPStok } from '../../peminjaman/interface/peminjaman';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

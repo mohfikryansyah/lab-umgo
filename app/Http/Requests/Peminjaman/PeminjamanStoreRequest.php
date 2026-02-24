@@ -22,7 +22,7 @@ class PeminjamanStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tanggal_pinjam' => ['required', 'date'],
+            // 'tanggal_pinjam' => ['required', 'date'],
             'judul_praktikum' => ['required', 'string'],
 
             'items' => ['required', 'array', 'min:1'],

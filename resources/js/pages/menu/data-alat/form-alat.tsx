@@ -1,13 +1,5 @@
 import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from '@/components/ui/popover';
 import {
     Select,
     SelectContent,
@@ -15,61 +7,43 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import useBoolean from '@/hooks/use-boolean';
-import { cn } from '@/lib/utils';
-import { SatuanBHPStock } from '@/pages/helpers/helper';
-import { BHPStock, BreadcrumbItem } from '@/types';
+import { KondisiAlat } from '@/types';
 import { InertiaFormProps } from '@inertiajs/react';
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
-import { CalendarIcon, UploadIcon } from 'lucide-react';
 import { useRef, useState } from 'react';
-import { FormBHPStokType, SatuanFormBHPStok } from '../../peminjaman/interface/peminjaman';
+import { KondisiAlatOptions } from './helpers';
+import { FormAlatType } from './interface-alat';
+import { UploadIcon } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-    },
-];
-
-interface FormBHPStokProps {
-    data: FormBHPStokType;
-    setData: InertiaFormProps<FormBHPStokType>['setData'];
-    errors: InertiaFormProps<FormBHPStokType>['errors'];
-    bhpstock?: BHPStock[];
-    processing?: boolean;
+interface FormAlatProps {
+    data: FormAlatType;
+    setData: InertiaFormProps<FormAlatType>['setData'];
+    errors: InertiaFormProps<FormAlatType>['errors'];
+    processing: boolean;
     existingImage?: string;
 }
 
-export default function FormBHPStok({
-    data,
-    setData,
-    errors,
-    bhpstock,
-    processing,
-    existingImage,
-}: FormBHPStokProps) {
-    const [dropdown, setDropdown] =
-        useState<React.ComponentProps<typeof Calendar>['captionLayout']>(
-            'dropdown',
-        );
-    const [date, setDate] = useState<Date | undefined>(new Date());
-
-    const isOpenCalendar = useBoolean(false);
-
+export default function FormAlat({ data, setData, errors, processing, existingImage }: FormAlatProps) {
     const inputFotoBahan = useRef<HTMLInputElement>(null);
     const [previewFotoBahan, setPreviewFotoBahan] = useState<string>('');
 
     return (
         <div className="space-y-4">
             <div className="grid w-full gap-2">
-                <Label>Nama Bahan</Label>
+                <Label>Nama Alat</Label>
                 <Input
-                    onChange={(e) => setData('nama_bahan', e.target.value)}
-                    value={data.nama_bahan}
+                    onChange={(e) => setData('nama_alat', e.target.value)}
+                    value={data.nama_alat}
                 />
-                <InputError message={errors.nama_bahan} />
+                <InputError message={errors.nama_alat} />
+            </div>
+            <div className="grid w-full gap-2">
+                <Label>Deskripsi Alat</Label>
+                <Input
+                    onChange={(e) => setData('deksripsi_alat', e.target.value)}
+                    value={data.deksripsi_alat}
+                />
+                <InputError message={errors.deksripsi_alat} />
             </div>
             <div className="grid w-full gap-2">
                 <Label>Jumlah Stok</Label>
@@ -85,76 +59,27 @@ export default function FormBHPStok({
             <div className="grid w-full gap-2">
                 <Label>Satuan</Label>
                 <Select
-                    value={data.satuan}
+                    value={data.kondisi_alat}
                     onValueChange={(value) =>
-                        setData('satuan', value as SatuanFormBHPStok)
+                        setData('kondisi_alat', value as KondisiAlat)
                     }
                 >
                     <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Pilih satuan" />
+                        <SelectValue placeholder="Pilih kondisi_alat" />
                     </SelectTrigger>
                     <SelectContent>
-                        {SatuanBHPStock.map((satuan) => (
-                            <SelectItem key={satuan.value} value={satuan.value}>
-                                {satuan.label}
+                        {KondisiAlatOptions.map((kondisi_alat) => (
+                            <SelectItem
+                                key={kondisi_alat.value}
+                                value={kondisi_alat.value}
+                            >
+                                {kondisi_alat.label}
                             </SelectItem>
                         ))}
                     </SelectContent>
                 </Select>
                 <InputError message={errors.satuan} />
             </div>
-            <div className="grid w-full gap-2">
-                <Label>Tanggal Kadaluarsa</Label>
-                <Popover
-                    modal={true}
-                    open={isOpenCalendar.state}
-                    onOpenChange={isOpenCalendar.setState}
-                >
-                    <PopoverTrigger asChild>
-                        <Button
-                            variant={'outline'}
-                            className={cn(
-                                'w-full bg-transparent pl-3 text-left font-normal',
-                                !data.tanggal_kadaluarsa &&
-                                    'text-muted-foreground',
-                            )}
-                        >
-                            {data.tanggal_kadaluarsa ? (
-                                format(data.tanggal_kadaluarsa, 'PPP', {
-                                    locale: id,
-                                })
-                            ) : (
-                                <span>Pilih tanggal</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                            mode="single"
-                            required
-                            selected={data.tanggal_kadaluarsa}
-                            onSelect={(date) => {
-                                setData('tanggal_kadaluarsa', date);
-                                isOpenCalendar.setFalse();
-                            }}
-                            defaultMonth={date}
-                            captionLayout={dropdown}
-                            className="rounded-lg border shadow-sm"
-                        />
-                    </PopoverContent>
-                </Popover>
-                <InputError message={errors.tanggal_kadaluarsa} />
-            </div>
-            <div className="grid w-full gap-2">
-                <Label>Supplier</Label>
-                <Input
-                    onChange={(e) => setData('supplier', e.target.value)}
-                    value={data.supplier}
-                ></Input>
-                <InputError message={errors.supplier} />
-            </div>
-
             <div className="grid w-full gap-2">
                 {previewFotoBahan || existingImage ? (
                     <>
@@ -164,7 +89,7 @@ export default function FormBHPStok({
                                     ? previewFotoBahan
                                     : '/storage/' + existingImage
                             }
-                            alt={data.nama_bahan}
+                            alt={data.nama_alat}
                             className="z-30 size-62.5 w-full rounded-xl object-cover ring-4 ring-white"
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -173,7 +98,7 @@ export default function FormBHPStok({
                         />
                         <InputError
                             className="mb-2"
-                            message={errors.foto_bahan}
+                            message={errors.foto_alat}
                         />
                     </>
                 ) : (
@@ -198,18 +123,20 @@ export default function FormBHPStok({
                                 JPG, PNG (maks. 2MB)
                             </span>
                         </div>
-                        <span className='text-gray-400 text-sm'>Foto harus berformat .JPG</span>
+                        <span className="text-sm text-gray-400">
+                            Foto harus berformat .JPG
+                        </span>
                         <InputError
                             className="mb-2"
-                            message={errors.foto_bahan}
+                            message={errors.foto_alat}
                         />
                     </>
                 )}
             </div>
             <Input
                 ref={inputFotoBahan}
-                id="foto_bahan"
-                name="foto_bahan"
+                id="foto_alat"
+                name="foto_alat"
                 type="file"
                 accept="image/*"
                 className="hidden"
@@ -217,7 +144,7 @@ export default function FormBHPStok({
                 onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                        setData('foto_bahan', file);
+                        setData('foto_alat', file);
 
                         const reader = new FileReader();
                         reader.onload = (ev) => {

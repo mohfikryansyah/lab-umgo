@@ -1,23 +1,21 @@
-import { Button } from '@/components/ui/button';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import AppLayout from '@/layouts/app-layout';
 import {
     ItemType,
     PeminjamanFormData,
 } from '@/pages/menu/peminjaman/interface/peminjaman';
 import peminjaman from '@/routes/peminjaman';
 import { Alat, BHPStock } from '@/types';
-import { useForm } from '@inertiajs/react';
-import { PlusCircle } from 'lucide-react';
+import { Head, useForm } from '@inertiajs/react';
 import React from 'react';
 import toast from 'react-hot-toast';
-import PeminjamanBhpForm from './form-peminjaman';
+import PeminjamanForm from './form-peminjaman';
 
 interface CreateProps {
     bhpstocks: BHPStock[];
@@ -37,8 +35,6 @@ export default function Create({ bhpstocks, alats }: CreateProps) {
         judul_praktikum: '',
     });
 
-    console.log(form.data);
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -47,7 +43,8 @@ export default function Create({ bhpstocks, alats }: CreateProps) {
                 toast.success('Berhasil melakukan peminjaman.');
             },
             onError: (errors) => {
-                console.error('Validation errors:', errors);
+                toast.error('Gagal melakukan peminjaman.');
+                console.log(errors);
             },
             preserveState: true,
             preserveScroll: true,
@@ -55,35 +52,32 @@ export default function Create({ bhpstocks, alats }: CreateProps) {
     };
 
     return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button className="w-full bg-linear-to-br from-sidebar to-sidebar/30 transition-colors duration-300 hover:bg-primary/90 xl:w-fit">
-                    <PlusCircle />
-                    Buat Data Baru
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-3xl">
-                <DialogHeader className="px-1">
-                    <DialogTitle>
-                        Form Peminjaman Alat dan Bahan Habis Pakai
-                    </DialogTitle>
-                    <DialogDescription>
-                        Silakan lengkapi formulir berikut, pastikan data yang
-                        diisi sudah benar, termasuk jenis item dan jumlah yang
-                        diperlukan, agar proses verifikasi dan persetujuan dapat
-                        dilakukan dengan cepat dan akurat.
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4">
-                    <PeminjamanBhpForm
-                        form={form}
-                        bhpstocks={bhpstocks}
-                        alats={alats}
-                        onSubmit={handleSubmit}
-                        submitLabel="Simpan Peminjaman"
-                    />
-                </div>
-            </DialogContent>
-        </Dialog>
+        <AppLayout breadcrumbs={[]}>
+            <Head title="Peminjaman BHP" />
+            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>
+                            Form Peminjaman Alat dan Bahan Habis Pakai
+                        </CardTitle>
+                        <CardDescription>
+                            Silakan lengkapi formulir berikut, pastikan data
+                            yang diisi sudah benar, termasuk jenis item dan
+                            jumlah yang diperlukan, agar proses verifikasi dan
+                            persetujuan dapat dilakukan dengan cepat dan akurat.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <PeminjamanForm
+                            form={form}
+                            bhpstocks={bhpstocks}
+                            alats={alats}
+                            onSubmit={handleSubmit}
+                            submitLabel="Simpan Peminjaman"
+                        />
+                    </CardContent>
+                </Card>
+            </div>
+        </AppLayout>
     );
 }

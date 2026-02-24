@@ -6,7 +6,6 @@ use Inertia\Inertia;
 use App\Models\BHPStock;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
-use App\Models\PeminjamanBHP;
 use App\Http\Controllers\Controller;
 use App\Services\Peminjaman\PeminjamanService;
 use App\Http\Requests\Peminjaman\PeminjamanStoreRequest;
@@ -31,7 +30,9 @@ class PeminjamanController extends Controller
      */
     public function create()
     {
-        //
+        $bhpstocks = BHPStock::get();
+        $alats = DataAlat::get();
+        return Inertia::render('menu/peminjaman/create-peminjaman', compact('bhpstocks', 'alats'));
     }
 
     /**
@@ -41,7 +42,7 @@ class PeminjamanController extends Controller
     {
         $service->store($request->validated());
 
-        return redirect()->back()->with('success', 'Peminjaman berhasil');
+        return to_route('peminjaman.index')->with('success', 'Peminjaman berhasil');
     }
 
     /**
@@ -49,7 +50,7 @@ class PeminjamanController extends Controller
      */
     public function show(Peminjaman $peminjaman)
     {
-        $peminjaman = $peminjaman->load(['items.alat', 'items.bhp']);
+        $peminjaman = $peminjaman->load(['items.alat', 'items.bhp', 'user']);
         return Inertia::render('menu/peminjaman/show-peminjaman', compact('peminjaman'));
     }
 
@@ -82,11 +83,30 @@ class PeminjamanController extends Controller
         return redirect()->back()->with('success', 'Peminjaman diperbarui');
     }
 
+    public function handleApprove(Peminjaman $peminjaman, PeminjamanService $service)
+    {
+        $service->approve($peminjaman);
+        return redirect()->back()->with('success', 'Berhasil menyetujui peminjaman');
+    }
+
+    public function handleDecline(Peminjaman $peminjaman, PeminjamanService $service)
+    {
+        $service->decline($peminjaman);
+        return redirect()->back()->with('success', 'Berhasil menolak peminjaman');   
+    }
+
+    public function handleComplete(Peminjaman $peminjaman, PeminjamanService $service)
+    {
+        $service->complete($peminjaman);
+        return to_route('peminjaman.index')->with('success', 'Peminjaman selesai');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Peminjaman $peminjaman)
     {
-        //
+        $peminjaman->delete();
+    return to_route('peminjaman.index')->with('success', 'Peminjaman berhasil dihapus');
     }
 }
