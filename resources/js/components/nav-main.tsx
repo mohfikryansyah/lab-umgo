@@ -18,12 +18,12 @@ import {
     CollapsibleTrigger,
 } from './ui/collapsible';
 
-export function NavMain({ items = [] }: { items: NavItem[] }) {
+export function NavMain({ items = [], label }: { items: NavItem[], label?: string }) {
     const { urlIsActive } = useActiveUrl();
 
     return (
         <SidebarGroup className="px-2 py-0">
-            <SidebarGroupLabel>Platform</SidebarGroupLabel>
+            <SidebarGroupLabel>{label ? label : 'Menu'}</SidebarGroupLabel>
             <SidebarMenu>
                 {items.map((item) => (
                     <Collapsible

@@ -25,7 +25,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('absensi', AbsensiController::class);
     Route::resource('jadwal', JadwalController::class);
-    Route::resource('data-alat', DataAlatController::class);
+    Route::resource('data-alat', DataAlatController::class)->parameters([
+        'data-alat' => 'alat'
+    ]);
     Route::resource('laporan', LaporanController::class);
     Route::resource('notifikasi', NotifikasiController::class);
 
@@ -45,12 +47,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     )->name('peminjaman.complete');
 
     Route::resource('peminjaman', PeminjamanController::class);
-});
 
-
-Route::prefix('bahan-habis-pakai')->middleware('auth')->group(function () {
-    Route::resource('stok', BHPStockController::class)->parameters([
-        'stok' => 'bhpStock'
+    Route::resource('bahan-habis-pakai', BHPStockController::class)->parameters([
+        'bahan-habis-pakai' => 'bhpStock'
     ]);
 });
 

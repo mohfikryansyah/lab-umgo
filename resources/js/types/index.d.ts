@@ -84,12 +84,15 @@ export interface Alat {
     deskripsi_alat: string;
     nomor_inventaris: string;
     foto_alat: string;
+    tempat_penyimpanan: string;
     jumlah_stok: number;
     kondisi_alat: KondisiAlat;
-    satuan: 'Buah';
+    satuan: SatuanAlat;
     created_at: string;
     updated_at: string;
 }
+
+export type SatuanAlat = 'buah' | 'unit' | 'pcs' | 'set';
 
 export type KondisiAlat = 'Baik' | 'Rusak Ringan' | 'Rusak Berat';
 
@@ -104,3 +107,18 @@ export interface BHPStock {
     created_at: string;
     updated_at: string;
 }
+
+export interface Laporan {
+    id: string;
+    pelapor_id: number;
+    pelapor: User;
+    judul: string;
+    deskripsi: string;
+    file_laporan: string;
+    tanggal_melapor: string;
+    tipe: LaporanTipe;
+    created_at: string;
+    updated_at: string;
+}
+
+export type LaporanTipe = 'Harian' | 'Mingguan' | 'Bulanan' | 'Insiden';

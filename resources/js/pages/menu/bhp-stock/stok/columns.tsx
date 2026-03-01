@@ -11,8 +11,8 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 import EditStockBHP from './edit-stock-bhp';
-import stok from '@/routes/stok';
 import { Button } from '@/components/ui/button';
+import bahanHabisPakai from '@/routes/bahan-habis-pakai';
 
 export const BHPStockColumns = (
     bhpstock: BHPStock[],
@@ -95,7 +95,7 @@ export const BHPStockColumns = (
             const { deleteItem, isDeleting } = useDeleteWithToast();
 
             const handleDeleteRow = (bhpstock: BHPStock) => {
-                deleteItem(stok.destroy(bhpstock.id));
+                deleteItem(bahanHabisPakai.destroy(bhpstock.id));
             };
 
             useEffect(() => {

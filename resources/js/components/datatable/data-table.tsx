@@ -114,7 +114,7 @@ export function DataTable<TData, TValue>({ columns, data, columnFilter, titleFil
                     </TableBody>
                 </Table>
             </div>
-            {/* <DataTablePagination table={table} /> */}
+            <DataTablePagination table={table} />
         </div>
     );
 }

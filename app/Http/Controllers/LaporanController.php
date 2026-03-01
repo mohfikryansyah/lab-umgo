@@ -11,9 +11,38 @@ class LaporanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('menu/laporan/pages');
+        $perPage = $request->integer('per_page', 12);
+        $view    = $request->string('view', 'grid')->toString();
+        $search  = $request->string('search', '')->toString();
+        $sortBy  = $request->string('sort_by', 'tanggal_melapor')->toString();
+        $sortDir = $request->string('sort_dir', 'desc')->toString();
+
+        $allowedSorts = ['tanggal_melapor', 'tipe'];
+        if (! in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'tanggal_melapor';
+        }
+
+        $laporans = Laporan::query()
+            ->when($search, fn ($q) => $q
+                ->where('judul', 'like', "%{$search}%")
+                ->orWhere('deskripsi', 'like', "%{$search}%")
+            )
+            ->orderBy($sortBy, $sortDir === 'asc' ? 'asc' : 'desc')
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return Inertia::render('menu/laporan/pages', [
+            'laporans'   => $laporans,
+            'filters'    => [
+                'search'   => $search,
+                'view'     => $view,
+                'sort_by'  => $sortBy,
+                'sort_dir' => $sortDir,
+                'per_page' => $perPage,
+            ],
+        ]);
     }
 
     /**

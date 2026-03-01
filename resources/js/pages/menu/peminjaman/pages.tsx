@@ -39,7 +39,6 @@ export default function PAGEPeminjaman({
     alats: Alat[];
 }) {
     const columns = PeminjamanColumns(peminjaman, peminjaman_items);
-    console.log(peminjaman);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Peminjaman BHP" />

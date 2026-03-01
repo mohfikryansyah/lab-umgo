@@ -11,6 +11,13 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import absensi from '@/routes/absensi';
+import bahanHabisPakai from '@/routes/bahan-habis-pakai';
+import dataAlat from '@/routes/data-alat';
+import jadwal from '@/routes/jadwal';
+import laporan from '@/routes/laporan';
+import notifikasi from '@/routes/notifikasi';
+import peminjaman from '@/routes/peminjaman';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
@@ -25,13 +32,6 @@ import {
     Wrench,
 } from 'lucide-react';
 import AppLogo from './app-logo';
-import absensi from '@/routes/absensi';
-import jadwal from '@/routes/jadwal';
-import dataAlat from '@/routes/data-alat';
-import laporan from '@/routes/laporan';
-import notifikasi from '@/routes/notifikasi';
-import stok from '@/routes/stok';
-import peminjaman from '@/routes/peminjaman';
 
 const mainNavItems: NavItem[] = [
     {
@@ -39,46 +39,44 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
-    {
-        title: 'Jadwal',
-        href: jadwal.index(),
-        icon: CalendarDays,
-    },
-    {
-        title: 'Absensi',
-        href: absensi.index(),
-        icon: ClipboardCheck,
-    },
-    {
-        title: 'Bahan Habis Pakai',
-        href: '#',
-        icon: Boxes,
-        isActive: window.location.pathname.startsWith('/peminjaman'),
-        items: [
-            {
-                title: 'Stok BHP',
-                href: stok.index(),
-            },
-            {
-                title: 'Peminjaman BHP',
-                href: peminjaman.index(),
-            }
-        ]
-    },
+];
+
+const masterNavItems: NavItem[] = [
     {
         title: 'Data Alat',
         href: dataAlat.index(),
         icon: Wrench,
     },
     {
+        title: 'Bahan Habis Pakai',
+        href: bahanHabisPakai.index(),
+        icon: Boxes,
+    },
+    {
+        title: 'Jadwal Kegiatan',
+        href: jadwal.index(),
+        icon: CalendarDays,
+    },
+];
+
+const transactionNavItems: NavItem[] = [
+    {
+        title: 'Peminjaman BHP',
+        href: peminjaman.index(),
+        icon: BookOpen,
+    },
+    {
+        title: 'Absensi',
+        href: absensi.index(),
+        icon: ClipboardCheck,
+    },
+];
+
+const reportNavItems: NavItem[] = [
+    {
         title: 'Laporan',
         href: laporan.index(),
         icon: FileText,
-    },
-    {
-        title: 'Notifikasi',
-        href: notifikasi.index(),
-        icon: Bell,
     },
 ];
 
@@ -111,11 +109,13 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={mainNavItems} label='Menu'/>
+                <NavMain items={masterNavItems} label='Master Data'/>
+                <NavMain items={transactionNavItems} label='Transaksi'/>
+                <NavMain items={reportNavItems} label='Laporan'/>
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

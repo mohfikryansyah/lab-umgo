@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('data_alats', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('nama_alat');
-            $table->string('deksripsi_alat');
+            $table->string('deskripsi_alat');
             $table->string('foto_alat');
             $table->string('tempat_penyimpanan');
             $table->integer('jumlah_stok'); 

@@ -27,7 +27,7 @@ class BHPUpdateRequest extends FormRequest
             'satuan' => ['required', 'string', 'in:botol,pcs,box'],
             'tanggal_kadaluarsa' => ['date'],
             'supplier' => ['required', 'string', 'max:255'],
-            'foto_bahan' => ['sometimes', 'image', 'max:2048'],
+            'foto_bahan' => ['sometimes', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 }

@@ -24,8 +24,8 @@ export default function Login({
 }: LoginProps) {
     return (
         <AuthLayout
-            title="Log in to your account"
-            description="Enter your email and password below to log in"
+            title="Masuk ke akun Anda"
+            description="Masukkan email dan password Anda untuk masuk."
         >
             <Head title="Log in" />
 
@@ -38,7 +38,7 @@ export default function Login({
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label htmlFor="email">Email</Label>
                                 <Input
                                     id="email"
                                     type="email"

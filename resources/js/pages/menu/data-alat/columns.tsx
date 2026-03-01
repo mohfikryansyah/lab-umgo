@@ -7,16 +7,17 @@ import { useDeleteWithToast } from '@/hooks/use-delete';
 import { Alat } from '@/types';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 // import EditStockAlat from './edit-stock-bhp';
-import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import dataAlat from '@/routes/data-alat';
+import { getColorForKondisiAlat } from './helpers';
+import ShowAlat from './show-alat';
+import EditAlat from './edit-alat';
+import { Link } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
 
-export const AlatColumns = (
-    alats: Alat[],
-): ColumnDef<Alat>[] => [
+export const AlatColumns = (alats: Alat[]): ColumnDef<Alat>[] => [
     {
         accessorKey: 'foto_alat',
         header: 'Foto Alat',
@@ -35,7 +36,7 @@ export const AlatColumns = (
                         <img
                             src={fotoAlat}
                             alt={row.original.nama_alat}
-                            className="w-full max-h-[60vh]"
+                            className="max-h-[60vh] w-full"
                         />
                     </DialogContent>
                 </Dialog>
@@ -46,6 +47,15 @@ export const AlatColumns = (
         accessorKey: 'nama_alat',
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Nama Alat" />
+        ),
+        filterFn: (row, id, value) => {
+            return value.includes(row.getValue(id));
+        },
+    },
+    {
+        accessorKey: 'nomor_inventaris',
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Nomor Inventaris" />
         ),
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id));
@@ -66,10 +76,23 @@ export const AlatColumns = (
         },
     },
     {
-        accessorKey: 'supplier',
+        accessorKey: 'tempat_penyimpanan',
+        header: 'Tempat Penyimpanan',
+    },
+    {
+        accessorKey: 'kondisi_alat',
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Supplier" />
+            <DataTableColumnHeader column={column} title="Kondisi Alat" />
         ),
+        cell: ({ row }) => {
+            const kondisiAlat = row.original.kondisi_alat;
+
+            return (
+                <Badge className={getColorForKondisiAlat(kondisiAlat)}>
+                    {kondisiAlat}
+                </Badge>
+            );
+        },
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id));
         },
@@ -94,17 +117,20 @@ export const AlatColumns = (
             }, [handleDeleteRow, isDeleting]);
 
             return (
-                <div className="flex gap-2 items-center">
+                <div className="flex items-center gap-2">
+                    <ShowAlat
+                        alat={row.original}
+                        key={`${row.original.id}-${row.original.nomor_inventaris}`}
+                    />
                     <DeleteDialog
                         isProcessing={disableButton}
                         onDelete={() => handleDeleteRow(row.original)}
                         title="Hapus Data Alat"
                         key={row.original.id}
                     />
-                    {/* <EditStockAlat
-                        bhpstock={row.original}
-                        key={`${row.original.id}-${row.original.nama_alat}`}
-                    /> */}
+                    <Link href={dataAlat.edit(row.original.id)}>
+                        <Button size={'icon'}>Edit</Button>
+                    </Link>
                 </div>
             );
         },

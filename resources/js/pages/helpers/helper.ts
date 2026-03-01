@@ -31,3 +31,27 @@ export function formatTanggalIndo(dateString: string) {
     { locale: id }
   );
 }
+export function formatTanggalIndo2(dateString: string) {
+  const parsed = new Date(dateString.replace(" ", "T"));
+
+  return format(
+    parsed,
+    "EEEE, dd MMMM yyyy",
+    { locale: id }
+  );
+}
+
+export const getColorForTipeLaporan = (tipe: string) => {
+    switch (tipe) {
+        case 'Harian':
+            return 'bg-green-500 text-green-100';
+        case 'Mingguan':
+            return 'bg-blue-500 text-blue-100';
+        case 'Bulanan':
+            return 'bg-yellow-500 text-yellow-100';
+        case 'Insiden':
+            return 'bg-purple-500 text-purple-100';
+        default:
+            return 'bg-neutral-800 text-white';
+    }
+};

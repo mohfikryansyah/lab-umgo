@@ -15,8 +15,8 @@ import { format } from 'date-fns';
 import { FormEventHandler } from 'react';
 import FormBHPStok from './form-stock-bhp';
 import toast from 'react-hot-toast';
-import stok from '@/routes/stok';
 import { FormBHPStokType, SatuanFormBHPStok } from '../../peminjaman/interface/peminjaman';
+import bahanHabisPakai from '@/routes/bahan-habis-pakai';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -54,7 +54,7 @@ export default function CreateStockBHP() {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(stok.store().url, {
+        post(bahanHabisPakai.store().url, {
             onSuccess: () => {
                 reset();
                 isOpenDialogCreate.setFalse();

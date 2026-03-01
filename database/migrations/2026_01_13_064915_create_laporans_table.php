@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('laporans', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignId('pelapor_id')->constrained('users')->cascadeOnDelete();
+            $table->string('judul');
+            $table->text('deskripsi');
+            $table->string('file_laporan');
+            $table->date('tanggal_melapor');
+            $table->enum('tipe', ['Harian', 'Mingguan', 'Bulanan', 'Insiden']);
             $table->timestamps();
         });
     }

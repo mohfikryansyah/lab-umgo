@@ -6,6 +6,9 @@ use Inertia\Inertia;
 use App\Models\DataAlat;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Alat\AlatStoreRequest;
+use App\Http\Requests\Alat\AlatUpdateRequest;
+use App\Services\Alat\AlatService;
 
 class DataAlatController extends Controller
 {
@@ -29,15 +32,16 @@ class DataAlatController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AlatStoreRequest $request, AlatService $service)
     {
-        //
+        $service->store($request->validated(), $request->file('foto_alat'));
+        return to_route('data-alat.index')->with('success', 'Data alat berhasil ditambahkan.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(DataAlat $dataAlat)
+    public function show(DataAlat $alat)
     {
         //
     }
@@ -45,23 +49,24 @@ class DataAlatController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DataAlat $dataAlat)
+    public function edit(DataAlat $alat)
     {
-        //
+        return Inertia::render('menu/data-alat/edit-alat', compact('alat'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DataAlat $dataAlat)
+    public function update(AlatUpdateRequest $request, DataAlat $alat, AlatService $service)
     {
-        //
+        $service->update($alat, $request->validated(), $request->file('foto_alat'));
+        return to_route('data-alat.index')->with('success', 'Data alat berhasil diperbarui.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DataAlat $dataAlat)
+    public function destroy(DataAlat $alat)
     {
         //
     }

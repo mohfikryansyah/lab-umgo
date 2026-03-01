@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import dataAlat from '@/routes/data-alat';
-import { BreadcrumbItem, KondisiAlat, SatuanAlat } from '@/types';
+import { Alat, BreadcrumbItem, KondisiAlat, SatuanAlat } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import toast from 'react-hot-toast';
@@ -23,7 +23,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function CreateAlat() {
+export default function EditAlat({ alat }: { alat: Alat }) {
     const {
         data,
         setData,
@@ -34,29 +34,42 @@ export default function CreateAlat() {
         isDirty,
         transform,
     } = useForm<FormAlatType>({
-        nama_alat: '',
-        satuan: 'buah' as SatuanAlat,
+        nama_alat: alat.nama_alat,
+        satuan: alat.satuan as SatuanAlat,
         foto_alat: null,
-        jumlah_stok: 0,
-        nomor_inventaris: '',
-        deskripsi_alat: '',
-        kondisi_alat: 'Baik' as KondisiAlat,
-        tempat_penyimpanan: '',
+        jumlah_stok: alat.jumlah_stok,
+        nomor_inventaris: alat.nomor_inventaris,
+        deskripsi_alat: alat.deskripsi_alat,
+        kondisi_alat: alat.kondisi_alat as KondisiAlat,
+        tempat_penyimpanan: alat.tempat_penyimpanan,
+        _method: 'PATCH',
+    });
+
+    transform((data) => {
+        const transformedData: any = {
+            ...data,
+        };
+
+        if (!data.foto_alat) {
+            delete transformedData.foto_alat;
+        }
+
+        return transformedData;
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(dataAlat.store().url, {
+        post(dataAlat.update(alat.id).url, {
             preserveScroll: true,
             preserveState: true,
             onSuccess: () => {
-                toast.success('Alat berhasil ditambahkan');
+                toast.success('Data alat berhasil diperbarui');
                 reset();
             },
-            onError: () => {
+            onError: (e) => {
                 toast.error(
-                    'Gagal menambahkan alat. Pastikan semua data sudah benar dan coba lagi.',
+                    'Gagal memperbarui alat. Pastikan semua data sudah benar dan coba lagi.',
                 );
             },
         });
@@ -64,11 +77,11 @@ export default function CreateAlat() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Tambah Alat" />
+            <Head title="Ubah Data Alat" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <Card className='bg-gray-100 dark:bg-[#171717]'>
+                <Card className="bg-gray-100 dark:bg-[#171717]">
                     <CardHeader>
-                        <CardTitle>Tambah Alat</CardTitle>
+                        <CardTitle>Ubah Alat</CardTitle>
                         <CardDescription>
                             Isi formulir dibawah ini dengan benar.
                         </CardDescription>
@@ -80,6 +93,7 @@ export default function CreateAlat() {
                                 errors={errors}
                                 processing={processing}
                                 setData={setData}
+                                existingImage={alat.foto_alat}
                             ></FormAlat>
                         </form>
                     </CardContent>
@@ -87,7 +101,9 @@ export default function CreateAlat() {
                         <Button
                             form="create-alat"
                             disabled={processing || !isDirty}
-                        >Submit</Button>
+                        >
+                            Submit
+                        </Button>
                     </CardFooter>
                 </Card>
             </div>

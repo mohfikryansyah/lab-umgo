@@ -8,7 +8,6 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import useBoolean from '@/hooks/use-boolean';
-import stok from '@/routes/stok';
 import { BHPStock, BreadcrumbItem } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { format } from 'date-fns';
@@ -17,6 +16,7 @@ import { FormEventHandler } from 'react';
 import toast from 'react-hot-toast';
 import FormBHPStok from './form-stock-bhp';
 import { FormBHPStokType, SatuanFormBHPStok } from '../../peminjaman/interface/peminjaman';
+import bahanHabisPakai from '@/routes/bahan-habis-pakai';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -67,7 +67,7 @@ export default function EditStockBHP({ bhpstock }: EditStockBHPProps) {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(stok.update(bhpstock.id).url, {
+        post(bahanHabisPakai.update(bhpstock.id).url, {
             onSuccess: () => {
                 reset();
                 isOpenDialogCreate.setFalse();

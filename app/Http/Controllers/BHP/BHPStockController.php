@@ -40,7 +40,7 @@ class BHPStockController extends Controller
             $request->file('foto_bahan')
         );
 
-        return to_route('stok.index')->with('success', 'BHP Stock created successfully.');
+        return to_route('bahan-habis-pakai.index')->with('success', 'BHP Stock created successfully.');
     }
 
     /**
@@ -73,7 +73,7 @@ class BHPStockController extends Controller
             $request->file('foto_bahan')
         );
 
-        return to_route('stok.index')->with('success', 'BHP Stock updated successfully.');
+        return to_route('bahan-habis-pakai.index')->with('success', 'BHP Stock updated successfully.');
     }
 
     /**
@@ -83,6 +83,6 @@ class BHPStockController extends Controller
     {
         $bhpStock->delete();
 
-        return to_route('stok.index')->with('success', 'BHP Stock deleted successfully.');
+        return to_route('bahan-habis-pakai.index')->with('success', 'BHP Stock deleted successfully.');
     }
 }
