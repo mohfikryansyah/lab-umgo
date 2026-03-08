@@ -19,8 +19,8 @@ class PeminjamanController extends Controller
      */
     public function index()
     {
-        $bhpstocks = BHPStock::get();
-        $peminjaman = Peminjaman::with('user', 'items')->get();
+        $bhpstocks = BHPStock::latest()->get();
+        $peminjaman = Peminjaman::with('user', 'items')->latest()->get();
         $alats = DataAlat::get();
         return Inertia::render('menu/peminjaman/pages', compact('bhpstocks', 'peminjaman', 'alats'));
     }
@@ -30,8 +30,8 @@ class PeminjamanController extends Controller
      */
     public function create()
     {
-        $bhpstocks = BHPStock::get();
-        $alats = DataAlat::get();
+        $bhpstocks = BHPStock::latest()->get();
+        $alats = DataAlat::latest()->get();
         return Inertia::render('menu/peminjaman/create-peminjaman', compact('bhpstocks', 'alats'));
     }
 

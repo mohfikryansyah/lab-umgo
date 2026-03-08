@@ -53,8 +53,6 @@ class PeminjamanService
             'item_id' => $bhp->id,
             'jumlah' => $item['jumlah'],
         ]);
-
-        $bhp->decrement('jumlah_stok', $item['jumlah']);
     }
 
     private function pinjamAlat(Peminjaman $peminjaman, array $item): void

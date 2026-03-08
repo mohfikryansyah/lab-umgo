@@ -61,7 +61,7 @@ const masterNavItems: NavItem[] = [
 
 const transactionNavItems: NavItem[] = [
     {
-        title: 'Peminjaman BHP',
+        title: 'Peminjaman',
         href: peminjaman.index(),
         icon: BookOpen,
     },

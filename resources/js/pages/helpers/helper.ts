@@ -55,3 +55,19 @@ export const getColorForTipeLaporan = (tipe: string) => {
             return 'bg-neutral-800 text-white';
     }
 };
+
+export const STRLimit = (text: string, maxLength: number) => {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + '...';
+}
+
+
+export function getFileType(path: string) {
+    const ext = path.split('.').pop()?.toLowerCase()
+
+    if (ext === 'pdf') return 'pdf'
+    if (ext === 'doc' || ext === 'docx') return 'word'
+
+    return 'unknown'
+}

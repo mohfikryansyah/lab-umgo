@@ -7,14 +7,15 @@ import { Laporan } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 // import EditStockLaporan from './edit-stock-bhp';
+import laporanRoute from '@/routes/laporan';
 import { Button } from '@/components/ui/button';
-import dataLaporan from '@/routes/data-alat';
 import { Link } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { Badge } from '@/components/ui/badge';
-import { getColorForTipeLaporan } from '@/pages/helpers/helper';
+import { getColorForTipeLaporan, STRLimit } from '@/pages/helpers/helper';
 import { Paginated } from '@/types/paginate';
+import { Edit } from 'lucide-react';
 
 export const LaporanColumns = (laporans: Paginated<Laporan>): ColumnDef<Laporan>[] => [
     {
@@ -34,8 +35,8 @@ export const LaporanColumns = (laporans: Paginated<Laporan>): ColumnDef<Laporan>
         cell: ({ row }) => {
             const deskripsi = row.original.deskripsi;
             return (
-                <div className="max-h-20 overflow-hidden text-ellipsis">
-                    {deskripsi}
+                <div className="max-h-20 overflow-hidden text-ellipsis" title={deskripsi}>
+                    {STRLimit(deskripsi, 20)}
                 </div>
             );
         },
@@ -81,8 +82,8 @@ export const LaporanColumns = (laporans: Paginated<Laporan>): ColumnDef<Laporan>
             const [disableButton, setDisableButton] = useState<boolean>(false);
             const { deleteItem, isDeleting } = useDeleteWithToast();
 
-            const handleDeleteRow = (alat: Laporan) => {
-                deleteItem(dataLaporan.destroy(alat.id));
+            const handleDeleteRow = (laporan: Laporan) => {
+                deleteItem(laporanRoute.destroy(laporan.id));
             };
 
             useEffect(() => {
@@ -105,8 +106,10 @@ export const LaporanColumns = (laporans: Paginated<Laporan>): ColumnDef<Laporan>
                         title="Hapus Data Laporan"
                         key={row.original.id}
                     />
-                    <Link href={dataLaporan.edit(row.original.id)}>
-                        <Button size={'icon'}>Edit</Button>
+                    <Link href={laporanRoute.edit(row.original.id)}>
+                        <Button size={'icon'} className='bg-yellow-400'>
+                            <Edit/>
+                        </Button>
                     </Link>
                 </div>
             );

@@ -29,6 +29,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'data-alat' => 'alat'
     ]);
     Route::resource('laporan', LaporanController::class);
+    Route::get('/laporan/{laporan}/view-document', [LaporanController::class, 'viewDocument'])->name('laporan.view-document');
+
+    // Route baru untuk serve file
+    Route::get('/laporan/{laporan}/file', [LaporanController::class, 'serveFile'])->name('laporan.serve-file');
+
     Route::resource('notifikasi', NotifikasiController::class);
 
     Route::patch(

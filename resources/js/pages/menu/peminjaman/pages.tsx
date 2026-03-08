@@ -45,10 +45,12 @@ export default function PAGEPeminjaman({
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <Card className="bg-gray-100 dark:bg-[#171717]">
                     <CardHeader>
-                        <CardTitle>Peminjaman Bahan Habis Pakai</CardTitle>
+                        <CardTitle>
+                            Peminjaman Bahan Habis Pakai dan Alat Laboratorium
+                        </CardTitle>
                         <CardDescription>
-                            Daftar peminjaman bahan habis pakai yang telah
-                            dilakukan.
+                            Daftar peminjaman bahan habis pakai dan alat yang
+                            telah dilakukan.
                         </CardDescription>
                     </CardHeader>
                     <CardContent>

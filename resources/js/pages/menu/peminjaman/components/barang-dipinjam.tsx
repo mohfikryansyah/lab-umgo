@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { usePeminjamanAction } from '@/hooks/use-peminjaman-action';
 import { getColorForStatus } from '@/pages/helpers/helper';
-import peminjamanRoute from '@/routes/peminjaman';
 import { BreadcrumbItem, Peminjaman } from '@/types';
 import { useForm } from '@inertiajs/react';
 
@@ -111,44 +110,41 @@ export default function BarangDipinjam({ peminjaman }: BarangDipinjamProps) {
                         </div>
                     );
                 })}
-            </CardContent>
 
-            
+                <CardFooter className="border-t bg-muted/40 px-6 py-3">
+                    <div className="flex w-full justify-end gap-4">
+                        {peminjaman.status === 'Pending' && (
+                            <>
+                                <WarningDialog
+                                    title="Tolak Permintaan Peminjaman"
+                                    description="Apakah Anda yakin ingin menolak permintaan peminjaman ini?"
+                                    onConfirm={handleDecline}
+                                    isProcessing={declineProcessing}
+                                />
+                                <Button
+                                    size="sm"
+                                    className="cursor-pointer bg-sidebar hover:bg-sidebar/90"
+                                    disabled={approveProcessing}
+                                    onClick={handleApprove}
+                                >
+                                    Konfirmasi
+                                </Button>
+                            </>
+                        )}
+
+                        {peminjaman.status === 'Disetujui' && (
+                            <Button
+                                size="sm"
+                                variant="destructive"
+                                disabled={processing}
+                                onClick={handleComplete}
+                            >
+                                Selesaikan Peminjaman
+                            </Button>
+                        )}
+                    </div>
+                </CardFooter>
+            </CardContent>
         </Card>
     );
 }
-
-
-{/* <CardFooter className="border-t bg-muted/40 px-6 py-3">
-                <div className="flex w-full justify-end gap-4">
-                    {peminjaman.status === 'Pending' && (
-                        <>
-                            <WarningDialog
-                                title="Tolak Permintaan Peminjaman"
-                                description="Apakah Anda yakin ingin menolak permintaan peminjaman ini?"
-                                onConfirm={handleDecline}
-                                isProcessing={declineProcessing}
-                            />
-                            <Button
-                                size="sm"
-                                className="cursor-pointer bg-sidebar hover:bg-sidebar/90"
-                                disabled={approveProcessing}
-                                onClick={handleApprove}
-                            >
-                                Konfirmasi
-                            </Button>
-                        </>
-                    )}
-
-                    {peminjaman.status === 'Disetujui' && (
-                        <Button
-                            size="sm"
-                            variant="destructive"
-                            disabled={processing}
-                            onClick={handleComplete}
-                        >
-                            Selesaikan Peminjaman
-                        </Button>
-                    )}
-                </div>
-            </CardFooter> */}

@@ -58,7 +58,7 @@ export default function FiturSection() {
     ];
 
     return (
-        <section id="fitur" className="relative bg-white px-6 py-8 lg:py-16">
+        <section id="fitur" className="relative bg-white px-6 pb-8 lg:p-16">
             <div className="container mx-auto px-4">
                 <div className="space-y-6 text-center">
                     {/* <h1 className="lg:text-3xl md:text-xl text-lg">Fitur Utama</h1> */}

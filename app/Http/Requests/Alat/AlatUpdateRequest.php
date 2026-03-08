@@ -28,7 +28,7 @@ class AlatUpdateRequest extends FormRequest
             'foto_alat' => ['sometimes', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
             'tempat_penyimpanan' => ['required', 'string', 'max:255'],
             'jumlah_stok' => ['required', 'integer', 'min:0'],
-            'nomor_inventaris' => ['sometimes', 'string', 'max:255', Rule::unique('data_alats', 'nomor_inventaris')->ignore($this->alat->id)],
+            'nomor_inventaris' => ['required', 'string', 'max:255', Rule::unique('data_alats', 'nomor_inventaris')->ignore($this->alat->id)],
             'satuan' => ['required', Rule::in(['buah'])],
             'kondisi_alat' => ['required', Rule::in(['Baik', 'Rusak Ringan', 'Rusak Berat'])],
         ];

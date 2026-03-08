@@ -10,7 +10,7 @@ export default function LandingPageLayout({
 }) {
     return (
         <main className="flex flex-1 flex-col w-full">
-            <Head title="Landing Page"></Head>
+            <Head title="Landing Page"/>
             <NavbarSection children={children} />
         </main>
     );

@@ -5,7 +5,7 @@ import LandingPageLayout from "./layout/landing-page-layout";
 import HeroSection from "./sections/hero-section";
 import FiturSection from "./sections/fitur-section";
 import ProdiSection from "./sections/prodi-section";
-import BackgroundRippleEffectDemo from "./sections/background-tes";
+import HeroSection2 from "./sections/hero-section2";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,7 +17,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function LandingPage() {
     return (
         <LandingPageLayout>
-            <BackgroundRippleEffectDemo/>
+            <HeroSection2/>
             {/* <HeroSection/> */}
             <FiturSection/>
             <ProdiSection/>

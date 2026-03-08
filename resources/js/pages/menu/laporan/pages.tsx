@@ -1,6 +1,8 @@
 import { DataPagination } from '@/components/custom/data-pagination';
+import DataToolbar from '@/components/custom/data-toolbar';
 import { DataViewToggle, ViewMode } from '@/components/custom/data-view-toggle';
 import { DataTable } from '@/components/datatable/data-table';
+import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -9,14 +11,6 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import { useDebounce } from '@/hooks/use-debounce';
 import AppLayout from '@/layouts/app-layout';
 import laporan from '@/routes/laporan';
@@ -24,15 +18,14 @@ import { BreadcrumbItem } from '@/types';
 import { LaporanIndexProps } from '@/types/laporan';
 import { DataFilters } from '@/types/paginate';
 import { Head, Link, router } from '@inertiajs/react';
-import { Search, SlidersHorizontal } from 'lucide-react';
 import { useCallback } from 'react';
 import { LaporanColumns } from './columns';
 import LaporanCard from './laporan-card';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
-        href: '/dashboard',
+        title: 'Laporan',
+        href: laporan.index().url,
     },
 ];
 
@@ -70,19 +63,12 @@ export default function PAGELaporan({ laporans, filters }: LaporanIndexProps) {
         }
     }
 
-    function handleSort(column: string) {
-        const newDir =
-            filters.sort_by === column && filters.sort_dir === 'asc'
-                ? 'desc'
-                : 'asc';
-        updateFilters({ sort_by: column, sort_dir: newDir });
-    }
-
     const preserveFilters = {
         ...(filters.view === 'grid' && {
             search: filters.search,
             sort_by: filters.sort_by,
             sort_dir: filters.sort_dir,
+            filter_type: filters.filter_type,
             per_page: filters.per_page,
         }),
         view: filters.view,
@@ -96,61 +82,67 @@ export default function PAGELaporan({ laporans, filters }: LaporanIndexProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    {isGrid ? (
-                        <>
-                            <div className="relative max-w-sm flex-1">
-                                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                <Input
-                                    placeholder="Cari laporan..."
-                                    defaultValue={gridFilters!.search}
-                                    onChange={(e) =>
-                                        debouncedSearch(e.target.value)
-                                    }
-                                    className="pl-9"
-                                />
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Select
-                                    value={`${gridFilters!.sort_by}:${gridFilters!.sort_dir}`}
-                                    onValueChange={(v) => {
-                                        const [sort_by, sort_dir] =
-                                            v.split(':');
-                                        updateFilters({ sort_by, sort_dir });
-                                    }}
-                                >
-                                    <SelectTrigger className="h-9 w-45">
-                                        <SlidersHorizontal className="mr-2 h-4 w-4" />
-                                        <SelectValue placeholder="Urutkan" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="tanggal_melapor:desc">
-                                            Terbaru
-                                        </SelectItem>
-                                        <SelectItem value="tanggal_melapor:asc">
-                                            Terlama
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <DataViewToggle
-                                    view="grid"
-                                    onChange={handleViewChange}
-                                />
-                            </div>
-                        </>
-                    ) : (
-                        // ── Table toolbar: hanya toggle di kanan, search ada di dalam ProductTable ──
-                        <div className="ml-auto">
-                            <DataViewToggle
-                                view="table"
-                                onChange={handleViewChange}
-                            />
-                        </div>
-                    )}
-                </div>
-                {filters.view === 'grid' ? (
+                {isGrid ? (
                     laporans.data.length > 0 ? (
                         <>
+                            <div className="flex flex-col justify-between md:flex-row md:gap-10">
+                                <Heading
+                                    title="Daftar Laporan"
+                                    description="Halaman ini menampilkan seluruh laporan yang telah dibuat. Anda dapat melihat detail, memantau status, serta melakukan tindakan yang diperlukan pada setiap laporan."
+                                />
+                                <Link href={laporan.create()} className="">
+                                    <Button className="w-fit bg-secondary text-gray-800 hover:bg-secondary/80 dark:bg-blue-900/50 dark:text-white">
+                                        Buat Laporan
+                                    </Button>
+                                </Link>
+                            </div>
+                            <DataToolbar
+                                searchPlaceholder="Cari laporan..."
+                                defaultSearch={gridFilters!.search}
+                                onSearchChange={debouncedSearch}
+                                sortValue={`${gridFilters!.sort_by}:${gridFilters!.sort_dir}`}
+                                sortOptions={[
+                                    {
+                                        label: 'Terbaru',
+                                        value: 'tanggal_melapor:desc',
+                                    },
+                                    {
+                                        label: 'Terlama',
+                                        value: 'tanggal_melapor:asc',
+                                    },
+                                ]}
+                                onSortChange={(sort_by, sort_dir) =>
+                                    updateFilters({ sort_by, sort_dir })
+                                }
+                                filterTypeValue={gridFilters!.filter_type}
+                                filterTypeOptions={[
+                                    {
+                                        label: 'Harian',
+                                        value: 'Harian',
+                                    },
+                                    {
+                                        label: 'Mingguan',
+                                        value: 'Mingguan',
+                                    },
+                                    {
+                                        label: 'Bulanan',
+                                        value: 'Bulanan',
+                                    },
+                                    {
+                                        label: 'Insiden',
+                                        value: 'Insiden',
+                                    },
+                                ]}
+                                onFilterTypeChange={(filter_type) => {
+                                    updateFilters({ filter_type });
+                                }}
+                                rightElement={
+                                    <DataViewToggle
+                                        view="grid"
+                                        onChange={handleViewChange}
+                                    />
+                                }
+                            />
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                                 {laporans.data.map((laporan) => (
                                     <LaporanCard
@@ -167,45 +159,95 @@ export default function PAGELaporan({ laporans, filters }: LaporanIndexProps) {
                                         search: preserveFilters!.search,
                                         sort_by: preserveFilters!.sort_by,
                                         sort_dir: preserveFilters!.sort_dir,
+                                        filter_type:
+                                            preserveFilters!.filter_type,
                                         per_page: preserveFilters!.per_page,
                                     }}
                                 />
                             </div>
                         </>
                     ) : (
-                        <Card className="bg-gray-100 dark:bg-[#171717]">
-                            <CardHeader></CardHeader>
-                            <CardTitle>Data Laporan</CardTitle>
-                            <CardDescription>
-                                Tidak ada laporan yang tersedia.
-                            </CardDescription>
-                            <CardContent>
-                                <Link href={laporan.create()}>
-                                    <Button className="bg-secondary text-gray-800 hover:bg-secondary/80 dark:bg-blue-900/50 dark:text-white">
+                        <>
+                            <div className="flex flex-col justify-between md:flex-row md:gap-10">
+                                <Heading
+                                    title="Daftar Laporan"
+                                    description="Halaman ini menampilkan seluruh laporan yang telah dibuat. Anda dapat melihat detail, memantau status, serta melakukan tindakan yang diperlukan pada setiap laporan."
+                                />
+                                <Link href={laporan.create()} className="">
+                                    <Button className="w-fit bg-secondary text-gray-800 hover:bg-secondary/80 dark:bg-blue-900/50 dark:text-white">
                                         Buat Laporan
                                     </Button>
                                 </Link>
-                            </CardContent>
-                        </Card>
+                            </div>
+                            <DataToolbar
+                                searchPlaceholder="Cari laporan..."
+                                defaultSearch={gridFilters!.search}
+                                onSearchChange={debouncedSearch}
+                                sortValue={`${gridFilters!.sort_by}:${gridFilters!.sort_dir}`}
+                                sortOptions={[
+                                    {
+                                        label: 'Terbaru',
+                                        value: 'tanggal_melapor:desc',
+                                    },
+                                    {
+                                        label: 'Terlama',
+                                        value: 'tanggal_melapor:asc',
+                                    },
+                                ]}
+                                onSortChange={(sort_by, sort_dir) =>
+                                    updateFilters({ sort_by, sort_dir })
+                                }
+                                rightElement={
+                                    <DataViewToggle
+                                        view="grid"
+                                        onChange={handleViewChange}
+                                    />
+                                }
+                            />
+                            <div className="flex flex-col items-center gap-4 rounded-lg bg-gray-100 py-10 dark:bg-[#171717]">
+                                <h1 className="leading-none font-semibold text-neutral-900">
+                                    Data Laporan
+                                </h1>
+                                <h1 className="text-sm text-muted-foreground">
+                                    Tidak ada laporan yang tersedia.
+                                </h1>
+                                <Button className="bg-secondary text-gray-800">
+                                    Buat Laporan
+                                </Button>
+                            </div>
+                        </>
                     )
                 ) : (
-                    <Card className="bg-gray-100 dark:bg-[#171717]">
-                        <CardHeader>
-                            <CardTitle>Data Laporan</CardTitle>
-                            <CardDescription>
-                                Menampilkan daftar lengkap laporan.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <DataTable columns={columns} data={laporans.data}>
-                                <Link href={laporan.create()}>
-                                    <Button className="bg-secondary text-gray-800 hover:bg-secondary/80 dark:bg-blue-900/50 dark:text-white">
-                                        Buat Laporan
-                                    </Button>
-                                </Link>
-                            </DataTable>
-                        </CardContent>
-                    </Card>
+                    <>
+                        <Card className="bg-gray-100 dark:bg-[#171717]">
+                            <CardHeader>
+                                <div className="flex items-center">
+                                    <CardTitle>Data Laporan</CardTitle>
+                                    <div className="ml-auto">
+                                        <DataViewToggle
+                                            view="table"
+                                            onChange={handleViewChange}
+                                        />
+                                    </div>
+                                </div>
+                                <CardDescription>
+                                    Menampilkan daftar lengkap laporan.
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <DataTable
+                                    columns={columns}
+                                    data={laporans.data}
+                                >
+                                    <Link href={laporan.create()}>
+                                        <Button className="bg-secondary text-gray-800 hover:bg-secondary/80 dark:bg-blue-900/50 dark:text-white">
+                                            Buat Laporan
+                                        </Button>
+                                    </Link>
+                                </DataTable>
+                            </CardContent>
+                        </Card>
+                    </>
                 )}
             </div>
         </AppLayout>

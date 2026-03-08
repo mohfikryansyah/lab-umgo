@@ -1,3 +1,5 @@
+import { LaporanTipe } from ".";
+
 export interface PaginationLink {
   url: string | null;
   label: string;
@@ -23,5 +25,6 @@ export interface DataFilters {
   view: 'grid' | 'table';
   sort_by: string;
   sort_dir: 'asc' | 'desc';
+  filter_type: LaporanTipe;
   per_page: number;
 }

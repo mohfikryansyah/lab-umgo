@@ -45,7 +45,7 @@ export default function NavbarSection({
             <Navbar>
                 <NavBody>
                     <NavbarLogo />
-                    <NavItems items={navItems} />
+                    <NavItems items={navItems}/>
                     <div className="flex items-center gap-4">
                         <NavbarButton variant="primary">
                             {auth.user ? (<Link href={dashboard()} prefetch>Dashboard</Link>) : (<Link href={login()} prefetch>Login</Link>)}
@@ -87,13 +87,6 @@ export default function NavbarSection({
                                 className="w-full"
                             >
                                 Login
-                            </NavbarButton>
-                            <NavbarButton
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                variant="primary"
-                                className="w-full"
-                            >
-                                Book a call
                             </NavbarButton>
                         </div>
                     </MobileNavMenu>

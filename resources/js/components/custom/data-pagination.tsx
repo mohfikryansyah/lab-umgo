@@ -19,7 +19,7 @@ interface DataPaginationProps<T> {
 
 export function DataPagination<T>({
   paginated,
-  perPageOptions = [12, 24, 48, 96],
+  perPageOptions = [6, 12, 24, 48, 96],
   preserveFilters = {},
 }: DataPaginationProps<T>) {
   const { current_page, last_page, from, to, total, per_page } = paginated;
@@ -42,7 +42,6 @@ export function DataPagination<T>({
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      {/* Info */}
       <p className="text-sm text-muted-foreground">
         Menampilkan <span className="font-medium text-foreground">{from}</span>–
         <span className="font-medium text-foreground">{to}</span> dari{' '}
@@ -50,7 +49,6 @@ export function DataPagination<T>({
       </p>
 
       <div className="flex items-center gap-3">
-        {/* Per page */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <span>Per halaman</span>
           <Select value={String(per_page)} onValueChange={changePerPage}>
@@ -67,8 +65,12 @@ export function DataPagination<T>({
           </Select>
         </div>
 
-        {/* Navigation */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
+          
+
+          <span className="min-w-40 text-center text-sm">
+            Halaman {current_page} dari {last_page}
+          </span>
           <Button
             size="icon"
             variant="outline"
@@ -89,10 +91,6 @@ export function DataPagination<T>({
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-
-          <span className="min-w-[80px] text-center text-sm">
-            {current_page} / {last_page}
-          </span>
 
           <Button
             size="icon"

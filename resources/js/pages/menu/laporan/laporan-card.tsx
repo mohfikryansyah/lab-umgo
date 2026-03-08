@@ -1,7 +1,11 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { formatTanggalIndo2 } from '@/pages/helpers/helper';
+import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
+import { formatTanggalIndo2, getColorForTipeLaporan, getFileType } from '@/pages/helpers/helper';
+import laporan from '@/routes/laporan';
 import { BreadcrumbItem, Laporan } from '@/types';
+import { Calendar, File, LocateIcon, MapPinHouse, User } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -11,6 +15,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function LaporanCard({ data }: { data: Laporan }) {
+    const fileType = getFileType(data.file_laporan);
+
     return (
         <Card className="group overflow-hidden rounded-2xl border bg-background p-0 shadow-sm transition-all hover:shadow-lg">
             <CardContent className="p-0">
@@ -24,14 +30,14 @@ export default function LaporanCard({ data }: { data: Laporan }) {
                     <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
 
                     <div className="absolute bottom-3 left-3">
-                        <Badge variant="secondary" className="backdrop-blur-sm">
+                        <Badge variant="secondary" className={cn("backdrop-blur-sm", getColorForTipeLaporan(data.tipe))}>
                             {data.tipe}
                         </Badge>
                     </div>
                 </div>
 
                 <div className="space-y-3 p-5">
-                    <h1 className="line-clamp-2 text-lg leading-tight font-semibold tracking-tight">
+                    <h1 className="line-clamp-1 text-lg leading-tight font-semibold tracking-tight" title={data.judul}>
                         {data.judul}
                     </h1>
 
@@ -39,8 +45,26 @@ export default function LaporanCard({ data }: { data: Laporan }) {
                         {data.deskripsi}
                     </p>
 
-                    <div className="pt-2 text-xs text-muted-foreground">
-                        <p>📅 {formatTanggalIndo2(data.tanggal_melapor)}</p>
+                    <Separator/>
+
+                    <div className="pt-2 text-xs text-muted-foreground space-y-2">
+                        <div className="flex items-center gap-1">
+                            <Calendar className='size-4' />
+                            <p>{formatTanggalIndo2(data.tanggal_melapor)}</p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <User className='size-4' />
+                            <p>{data.pelapor.name}</p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            {fileType === 'pdf' ? (
+                                <img src="/images/pdf.svg" className='size-4' alt="PDF SVG" />
+                            ) : (
+                                <img src="/images/word.svg" className='size-4' alt="PDF SVG" />
+                            )}
+                            {/* <File className='size-4' /> */}
+                            <a href={laporan.viewDocument(data.id).url} className='text-blue-500 hover:unde'>Lihat dokumen</a>
+                        </div>
                     </div>
                 </div>
             </CardContent>
