@@ -20,7 +20,7 @@ export default function LaporanCard({ data }: { data: Laporan }) {
     return (
         <Card className="group overflow-hidden rounded-2xl border bg-background p-0 shadow-sm transition-all hover:shadow-lg">
             <CardContent className="p-0">
-                {/* <div className="relative aspect-video overflow-hidden">
+                <div className="relative aspect-video overflow-hidden">
                     <img
                         src="https://placehold.co/600x400"
                         alt="tes"
@@ -34,8 +34,7 @@ export default function LaporanCard({ data }: { data: Laporan }) {
                             {data.tipe}
                         </Badge>
                     </div>
-                </div> */}
-                <div className={cn("w-full text-xs text-center py-0.5 font-medium", getColorForTipeLaporan(data.tipe))}>{data.tipe}</div>
+                </div>
 
                 <div className="space-y-3 p-5">
                     <h1 className="line-clamp-1 text-lg leading-tight font-semibold tracking-tight" title={data.judul}>

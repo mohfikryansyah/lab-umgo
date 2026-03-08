@@ -7,17 +7,19 @@ import { Laporan } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 // import EditStockLaporan from './edit-stock-bhp';
-import laporanRoute from '@/routes/laporan';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { getColorForTipeLaporan, STRLimit } from '@/pages/helpers/helper';
+import laporanRoute from '@/routes/laporan';
+import { Paginated } from '@/types/paginate';
 import { Link } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
-import { Badge } from '@/components/ui/badge';
-import { getColorForTipeLaporan, STRLimit } from '@/pages/helpers/helper';
-import { Paginated } from '@/types/paginate';
 import { Edit } from 'lucide-react';
 
-export const LaporanColumns = (laporans: Paginated<Laporan>): ColumnDef<Laporan>[] => [
+export const LaporanColumns = (
+    laporans: Paginated<Laporan>,
+): ColumnDef<Laporan>[] => [
     {
         accessorKey: 'judul',
         header: ({ column }) => (
@@ -35,7 +37,10 @@ export const LaporanColumns = (laporans: Paginated<Laporan>): ColumnDef<Laporan>
         cell: ({ row }) => {
             const deskripsi = row.original.deskripsi;
             return (
-                <div className="max-h-20 overflow-hidden text-ellipsis" title={deskripsi}>
+                <div
+                    className="max-h-20 overflow-hidden text-ellipsis"
+                    title={deskripsi}
+                >
                     {STRLimit(deskripsi, 20)}
                 </div>
             );
@@ -46,16 +51,18 @@ export const LaporanColumns = (laporans: Paginated<Laporan>): ColumnDef<Laporan>
     },
     {
         accessorKey: 'tanggal_melapor',
-        accessorFn: (row) =>
-            format(new Date(row.tanggal_melapor), 'EEEE, dd MMM yyyy', {
-                locale: id,
-            }),
+        accessorFn: (row) => new Date(row.tanggal_melapor),
+
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Tanggal Melapor" />
         ),
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id));
-        },
+
+        cell: ({ row }) =>
+            format(row.getValue('tanggal_melapor'), 'EEEE, dd MMM yyyy', {
+                locale: id,
+            }),
+
+        sortingFn: 'datetime',
     },
     {
         accessorKey: 'tipe',
@@ -107,8 +114,8 @@ export const LaporanColumns = (laporans: Paginated<Laporan>): ColumnDef<Laporan>
                         key={row.original.id}
                     />
                     <Link href={laporanRoute.edit(row.original.id)}>
-                        <Button size={'icon'} className='bg-yellow-400'>
-                            <Edit/>
+                        <Button size={'icon'} className="bg-yellow-400">
+                            <Edit />
                         </Button>
                     </Link>
                 </div>

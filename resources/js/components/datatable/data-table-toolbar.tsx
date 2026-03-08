@@ -10,6 +10,7 @@ import { DataTableViewOptions } from './data-table-view-options';
 // import { statuses } from '@/pages/menu-sidebar/Dashboard/data/data';
 import React from 'react';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
+import { LaporanTipeOptions } from '@/pages/menu/laporan/interface';
 
 interface DataTableToolbarProps<TData> {
     table: Table<TData>;
@@ -40,6 +41,7 @@ export function DataTableToolbar<TData>({
         setSearchValue(value);
         table.setGlobalFilter(value);
     };
+    
 
     return (
         <div className="flex items-center justify-between">
@@ -64,6 +66,13 @@ export function DataTableToolbar<TData>({
                     onChange={handleSearchChange}
                     className="w-full bg-gray-50 xl:w-62.5 dark:bg-neutral-800"
                 />
+                {/* {table.getColumn('tipe') && (
+                    <DataTableFacetedFilter
+                            column={table.getColumn('tipe')}
+                            title={titleFilter}
+                            options={LaporanTipeOptions}
+                        />
+                )} */}
                 {columnFilter &&
                     optionsFilter &&
                     table.getColumn(columnFilter) && (
@@ -89,7 +98,7 @@ export function DataTableToolbar<TData>({
                 )}
                 {children}
             </div>
-            <DataTableViewOptions table={table} />
+            {/* <DataTableViewOptions table={table} /> */}
         </div>
     );
 }

@@ -62,7 +62,7 @@ export default function FormLaporan({ data, setData, errors }: Props) {
                 <FileUploadField
                     label="Upload Dokumen"
                     value={data.file_laporan}
-                    accept=".pdf,.doc,.docx"
+                    accept=".pdf"
                     error={errors.file_laporan}
                     onChange={(file) => setData('file_laporan', file)}
                 />
