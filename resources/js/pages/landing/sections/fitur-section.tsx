@@ -58,16 +58,15 @@ export default function FiturSection() {
     ];
 
     return (
-        <section id="fitur" className="relative bg-white px-6 pb-8 lg:p-16">
+        <section id="fitur" className="relative bg-white px-6 pb-8 lg:pb-16">
             <div className="container mx-auto px-4">
                 <div className="space-y-6 text-center">
-                    {/* <h1 className="lg:text-3xl md:text-xl text-lg">Fitur Utama</h1> */}
                     <Heading
                         classNameTitle="text-3xl text-yellow-400"
                         classNameDescription="text-lg"
                         title="Fitur Utama"
                         description="Sistem terintegrasi untuk mengelola seluruh aspek laboratorium kesehatan dengan efisien dan efektif"
-                    ></Heading>
+                    />
 
                     <div className="grid gap-6 text-start md:grid-cols-3">
                         {fitur.map((item, index) => {
@@ -77,30 +76,33 @@ export default function FiturSection() {
                                 <motion.div
                                     key={index}
                                     variants={{
-                                        hidden: { opacity: 0, y: 50 },
+                                        hidden: { opacity: 0, y: 40 },
                                         show: {
                                             opacity: 1,
                                             y: 0,
                                             transition: {
-                                                duration: 0.7,
+                                                duration: 0.6,
                                                 ease: 'easeOut',
                                             },
                                         },
                                     }}
-                                    whileHover={{ scale: 1.03 }}
-                                    className="space-y-4 rounded-lg border p-6 shadow-lg transition hover:shadow-xl"
+                                    whileHover={{ y: -4 }}
+                                    className="group relative space-y-5 overflow-hidden rounded-xl border border-[#243673]/20 bg-linear-to-br from-[#243673]/5 via-white to-[#243673]/10 p-6 shadow-md transition-all duration-300 hover:border-[#243673]/40 hover:shadow-xl"
                                 >
-                                    <div className="inline-block rounded-lg bg-sky-100 p-3">
-                                        <Icon className="size-7 text-sky-800" />
+                                    {/* icon */}
+                                    <div className="flex size-12 items-center justify-center rounded-lg bg-[#243673]/10 transition-all duration-300 group-hover:bg-[#243673]">
+                                        <Icon className="size-6 text-[#243673] group-hover:text-white" />
                                     </div>
 
-                                    <p className="text-lg font-bold">
+                                    <p className="text-lg font-semibold text-[#243673]">
                                         {item.title}
                                     </p>
 
-                                    <p className="text-gray-600">
+                                    <p className="text-sm leading-relaxed text-gray-600">
                                         {item.description}
                                     </p>
+
+                                    <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#243673] transition-all duration-300 group-hover:w-full" />
                                 </motion.div>
                             );
                         })}

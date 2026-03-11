@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('jadwals', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('nama_kegiatan');
-            $table->string('deskripsi_kegiatan');
-            $table->date('waktu_mulai');
-            $table->string('ruangan_kegiatan');
-            $table->foreignId('penanggung_jawab')->constrained('users')->cascadeOnDelete();
+            $table->string('judul_jadwal');
+            $table->string('deskripsi_jadwal');
+            $table->timestamp('waktu');
+            $table->string('ruangan_jadwal');
+            $table->enum('status', ['Terjadwal', 'Selesai']);
+            $table->foreignId('penanggung_jawab_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

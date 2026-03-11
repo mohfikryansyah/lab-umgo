@@ -12,7 +12,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function PAGEJadwal() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title='' />
+            <Head title='Jadwal Kegiatan' />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <h1>JADWAL</h1>
             </div>

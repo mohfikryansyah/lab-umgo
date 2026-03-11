@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
         Laporan::factory()->count(20)->create();
 
         User::factory()->create([
-            'name' => 'Mohamad Fiqriansyah Panu',
-            'email' => 'moh.fikryansyah@gmail.com',
+            'name' => 'Administrator',
+            'email' => 'admin-lab@umgo.ac.id',
         ]);
     }
 }

@@ -11,10 +11,10 @@ import {
     NavItems,
 } from '@/components/ui/resizable-navbar';
 import { dashboard, login } from '@/routes';
+import { SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import Footer from './footer';
-import { SharedData } from '@/types';
 
 export default function NavbarSection({
     children,
@@ -38,17 +38,25 @@ export default function NavbarSection({
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    const { auth } = usePage<SharedData>().props
+    const { auth } = usePage<SharedData>().props;
 
     return (
         <div className="relative w-full dark:bg-white">
             <Navbar>
                 <NavBody>
                     <NavbarLogo />
-                    <NavItems items={navItems}/>
+                    <NavItems items={navItems} />
                     <div className="flex items-center gap-4">
                         <NavbarButton variant="primary">
-                            {auth.user ? (<Link href={dashboard()} prefetch>Dashboard</Link>) : (<Link href={login()} prefetch>Login</Link>)}
+                            {auth.user ? (
+                                <Link href={dashboard()} prefetch>
+                                    Dashboard
+                                </Link>
+                            ) : (
+                                <Link href={login()} prefetch>
+                                    Login
+                                </Link>
+                            )}
                         </NavbarButton>
                         {/* <NavbarButton variant="primary">
                             Book a call
@@ -93,7 +101,7 @@ export default function NavbarSection({
                 </MobileNav>
             </Navbar>
             {children}
-            <Footer/>
+            <Footer />
         </div>
     );
 }

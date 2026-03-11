@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
+use App\Http\Requests\Jadwal\JadwalStoreRequest;
 use App\Models\Jadwal;
+use App\Models\User;
+use App\Services\Jadwal\JadwalService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class JadwalController extends Controller
 {
@@ -21,15 +24,17 @@ class JadwalController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::latest()->get();
+        return Inertia::render('menu/jadwal/create-jadwal', compact('users'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(JadwalStoreRequest $request, JadwalService $service)
     {
-        //
+        $service->store($request->validated());
+        return back()->with('success', 'Berhasil menyimpan jadwal');
     }
 
     /**
