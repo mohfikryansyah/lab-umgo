@@ -56,6 +56,17 @@ export const getColorForTipeLaporan = (tipe: string) => {
     }
 };
 
+export const getColorForStatusJadwal = (status: string) => {
+    switch (status) {
+        case 'Selesai':
+            return 'bg-green-500 text-green-100';
+        case 'Terjadwal':
+            return 'bg-blue-500 text-blue-100';
+        default:
+            return 'bg-neutral-800 text-white';
+    }
+}
+
 export const STRLimit = (text: string, maxLength: number) => {
     if (!text) return '';
     if (text.length <= maxLength) return text;

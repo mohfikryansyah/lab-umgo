@@ -1,4 +1,5 @@
-import { User } from "@/types";
+import { Jadwal, User } from "@/types";
+import { DataFilters, Paginated } from "@/types/paginate";
 
 export interface  FormJadwalType {
     judul_jadwal: string;
@@ -22,3 +23,8 @@ export const ENUMStatusJadwalForSelect = [
         label: 'Selesai'
     },
 ]
+
+export interface JadwalIndexProps {
+  jadwals: Paginated<Jadwal>;
+  filters: DataFilters;
+}

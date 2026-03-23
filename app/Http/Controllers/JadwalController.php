@@ -14,9 +14,47 @@ class JadwalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('menu/jadwal/pages');
+        $perPage = $request->integer('per_page', 6);
+        $view    = $request->string('view', 'grid')->toString();
+        $search  = $request->string('search', '')->toString();
+        $sortBy  = $request->string('sort_by', 'waktu')->toString();
+        $sortDir = $request->string('sort_dir', 'desc')->toString();
+        $filter_Type = $request->string('filter_type', '')->toString();
+
+        $allowedSorts = ['waktu', 'tipe'];
+        if (! in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'waktu';
+        }
+
+        $jadwals = Jadwal::query()
+            ->when(
+                $search,
+                fn($q) => $q
+                    ->where('judul_jadwal', 'like', "%{$search}%")
+                    ->orWhere('deskripsi_jadwal', 'like', "%{$search}%")
+            )
+            ->when(
+                $filter_Type,
+                fn($q) => $q->where('tipe', $filter_Type)
+            )
+            ->with('penanggungJawab:id,name')
+            ->orderBy($sortBy, $sortDir === 'asc' ? 'asc' : 'desc')
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return Inertia::render('menu/jadwal/pages', [
+            'jadwals'   => $jadwals,
+            'filters'    => [
+                'search'   => $search,
+                'view'     => $view,
+                'sort_by'  => $sortBy,
+                'sort_dir' => $sortDir,
+                'per_page' => $perPage,
+                'filter_type' => $filter_Type,
+            ],
+        ]);
     }
 
     /**
@@ -34,7 +72,7 @@ class JadwalController extends Controller
     public function store(JadwalStoreRequest $request, JadwalService $service)
     {
         $service->store($request->validated());
-        return back()->with('success', 'Berhasil menyimpan jadwal');
+        return to_route('jadwal.index')->with('success', 'Berhasil menyimpan jadwal');
     }
 
     /**
@@ -64,8 +102,10 @@ class JadwalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Jadwal $jadwal)
+    public function destroy(Jadwal $jadwal, JadwalService $service)
     {
-        //
+        $service->destroy($jadwal);
+
+        return to_route('jadwal.index')->with('success', 'Jadwal berhasil dihapus.');
     }
 }

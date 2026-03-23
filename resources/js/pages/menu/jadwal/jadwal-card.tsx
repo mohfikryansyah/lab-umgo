@@ -4,15 +4,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useDeleteWithToast } from '@/hooks/use-delete';
 import { cn } from '@/lib/utils';
-import {
-    formatTanggalIndo2,
-    getColorForTipeLaporan,
-    getFileType,
-} from '@/pages/helpers/helper';
-import { default as laporan, default as laporanRoute } from '@/routes/laporan';
-import { BreadcrumbItem, Laporan } from '@/types';
+import { formatTanggalIndo2, getColorForStatusJadwal } from '@/pages/helpers/helper';
+import { default as jadwalRoute } from '@/routes/jadwal';
+import { BreadcrumbItem, Jadwal } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Calendar, Edit, User } from 'lucide-react';
+import { Calendar, Edit, MapPin, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -22,13 +18,13 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function LaporanCard({ data }: { data: Laporan }) {
-    const fileType = getFileType(data.file_laporan);
+export default function JadwalCard({ data }: { data: Jadwal }) {
+    // const fileType = getFileType(data.file_jadwal);
     const [disableButton, setDisableButton] = useState<boolean>(false);
     const { deleteItem, isDeleting } = useDeleteWithToast();
 
-    const handleDeleteRow = (laporan: Laporan) => {
-        deleteItem(laporanRoute.destroy(laporan.id));
+    const handleDeleteRow = (jadwal: Jadwal) => {
+        deleteItem(jadwalRoute.destroy(jadwal.id));
     };
 
     useEffect(() => {
@@ -42,40 +38,25 @@ export default function LaporanCard({ data }: { data: Laporan }) {
     return (
         <Card className="group overflow-hidden rounded-2xl border bg-background p-0 shadow-sm transition-all hover:shadow-lg">
             <CardContent className="p-0">
-                {/* <div className="relative aspect-video overflow-hidden">
-                    <img
-                        src="https://placehold.co/600x400"
-                        alt="tes"
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-
-                    <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
-
-                    <div className="absolute bottom-3 left-3">
-                        <Badge variant="secondary" className={cn("backdrop-blur-sm", getColorForTipeLaporan(data.tipe))}>
-                            {data.tipe}
-                        </Badge>
-                    </div>
-                </div> */}
                 <div
                     className={cn(
                         'w-full py-0.5 text-center text-xs font-medium',
-                        getColorForTipeLaporan(data.tipe),
+                        getColorForStatusJadwal(data.status),
                     )}
                 >
-                    {data.tipe}
+                    {data.status}
                 </div>
 
                 <div className="space-y-3 p-5">
                     <h1
                         className="line-clamp-1 text-lg leading-tight font-semibold tracking-tight"
-                        title={data.judul}
+                        title={data.judul_jadwal}
                     >
-                        {data.judul}
+                        {data.judul_jadwal}
                     </h1>
 
                     <p className="line-clamp-3 text-sm text-muted-foreground">
-                        {data.deskripsi}
+                        {data.deskripsi_jadwal}
                     </p>
 
                     <Separator />
@@ -83,33 +64,15 @@ export default function LaporanCard({ data }: { data: Laporan }) {
                     <div className="space-y-2 text-xs text-muted-foreground">
                         <div className="flex items-center gap-1">
                             <Calendar className="size-4" />
-                            <p>{formatTanggalIndo2(data.tanggal_melapor)}</p>
+                            <p>{formatTanggalIndo2(data.waktu)}</p>
                         </div>
                         <div className="flex items-center gap-1">
                             <User className="size-4" />
-                            <p>{data.pelapor.name}</p>
+                            <p>{data.penanggung_jawab.name}</p>
                         </div>
                         <div className="flex items-center gap-1">
-                            {fileType === 'pdf' ? (
-                                <img
-                                    src="/images/pdf.svg"
-                                    className="size-4"
-                                    alt="PDF SVG"
-                                />
-                            ) : (
-                                <img
-                                    src="/images/word.svg"
-                                    className="size-4"
-                                    alt="PDF SVG"
-                                />
-                            )}
-                            {/* <File className='size-4' /> */}
-                            <a
-                                href={laporan.viewDocument(data.id).url}
-                                className="hover:unde text-blue-500"
-                            >
-                                Lihat dokumen
-                            </a>
+                            <MapPin className="size-4" />
+                            <p>{data.ruangan_jadwal}</p>
                         </div>
                     </div>
 
@@ -119,7 +82,7 @@ export default function LaporanCard({ data }: { data: Laporan }) {
                         <div className="flex items-center gap-1">
                             <Link
                                 className="font-semibold"
-                                href={laporanRoute.edit(data)}
+                                href={jadwalRoute.edit(data)}
                             >
                                 <Button
                                     size={'icon'}
@@ -133,7 +96,7 @@ export default function LaporanCard({ data }: { data: Laporan }) {
                             <DeleteDialog
                                 isProcessing={disableButton}
                                 onDelete={() => handleDeleteRow(data)}
-                                title="Hapus Data Laporan"
+                                title="Hapus Data Jadwal"
                                 key={data.id}
                             />
                         </div>

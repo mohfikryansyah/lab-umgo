@@ -121,4 +121,19 @@ export interface Laporan {
     updated_at: string;
 }
 
+export interface Jadwal {
+    id: string;
+    penanggung_jawab_id: number;
+    penanggung_jawab: User;
+    judul_jadwal: string;
+    deskripsi_jadwal: string;
+    waktu: string;
+    ruangan_jadwal: string;
+    status: ENUMStatus;
+    created_at: string;
+    updated_at: string;
+}
+
+export type ENUMStatus = 'Terjadwal' | 'Selesai';
+
 export type LaporanTipe = 'Harian' | 'Mingguan' | 'Bulanan' | 'Insiden';

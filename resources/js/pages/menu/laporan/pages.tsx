@@ -20,8 +20,8 @@ import { DataFilters } from '@/types/paginate';
 import { Head, Link, router } from '@inertiajs/react';
 import { useCallback } from 'react';
 import { LaporanColumns } from './columns';
-import LaporanCard from './laporan-card';
 import { LaporanTipeOptions } from './interface';
+import LaporanCard from './laporan-card';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -66,7 +66,6 @@ export default function PAGELaporan({ laporans, filters }: LaporanIndexProps) {
             <Head title="Laporan Operasional" />
 
             <div className="flex flex-col gap-6 p-6">
-
                 {/* HEADER */}
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <Heading
@@ -81,50 +80,44 @@ export default function PAGELaporan({ laporans, filters }: LaporanIndexProps) {
                     </Link>
                 </div>
 
-                {/* TOOLBAR */}
                 {isGrid && (
-                    // <Card className="border-none bg-gray-100/80 shadow-sm backdrop-blur dark:bg-[#171717]">
-                        // <CardContent className="p-4">
-                            <DataToolbar
-                                searchPlaceholder="Cari laporan..."
-                                defaultSearch={gridFilters!.search}
-                                onSearchChange={debouncedSearch}
-                                sortValue={`${gridFilters!.sort_by}:${gridFilters!.sort_dir}`}
-                                sortOptions={[
-                                    {
-                                        label: 'Terbaru',
-                                        value: 'tanggal_melapor:desc',
-                                    },
-                                    {
-                                        label: 'Terlama',
-                                        value: 'tanggal_melapor:asc',
-                                    },
-                                ]}
-                                onSortChange={(sort_by, sort_dir) =>
-                                    updateFilters({ sort_by, sort_dir })
-                                }
-                                filterTypeValue={gridFilters!.filter_type}
-                                filterTypeOptions={[
-                                    { label: 'Harian', value: 'Harian' },
-                                    { label: 'Mingguan', value: 'Mingguan' },
-                                    { label: 'Bulanan', value: 'Bulanan' },
-                                    { label: 'Insiden', value: 'Insiden' },
-                                ]}
-                                onFilterTypeChange={(filter_type) =>
-                                    updateFilters({ filter_type })
-                                }
-                                rightElement={
-                                    <DataViewToggle
-                                        view="grid"
-                                        onChange={handleViewChange}
-                                    />
-                                }
+                    <DataToolbar
+                        searchPlaceholder="Cari laporan..."
+                        defaultSearch={gridFilters!.search}
+                        onSearchChange={debouncedSearch}
+                        sortValue={`${gridFilters!.sort_by}:${gridFilters!.sort_dir}`}
+                        sortOptions={[
+                            {
+                                label: 'Terbaru',
+                                value: 'tanggal_melapor:desc',
+                            },
+                            {
+                                label: 'Terlama',
+                                value: 'tanggal_melapor:asc',
+                            },
+                        ]}
+                        onSortChange={(sort_by, sort_dir) =>
+                            updateFilters({ sort_by, sort_dir })
+                        }
+                        filterTypeValue={gridFilters!.filter_type}
+                        filterTypeOptions={[
+                            { label: 'Harian', value: 'Harian' },
+                            { label: 'Mingguan', value: 'Mingguan' },
+                            { label: 'Bulanan', value: 'Bulanan' },
+                            { label: 'Insiden', value: 'Insiden' },
+                        ]}
+                        onFilterTypeChange={(filter_type) =>
+                            updateFilters({ filter_type })
+                        }
+                        rightElement={
+                            <DataViewToggle
+                                view="grid"
+                                onChange={handleViewChange}
                             />
-                        // </CardContent>
-                    // </Card>
+                        }
+                    />
                 )}
 
-                {/* CONTENT */}
                 {isGrid ? (
                     hasData ? (
                         <>
@@ -148,12 +141,12 @@ export default function PAGELaporan({ laporans, filters }: LaporanIndexProps) {
                             </div>
                         </>
                     ) : (
-                        <Card className="flex flex-col items-center justify-center gap-4 border-dashed py-16 text-center bg-gray-100 dark:bg-[#171717]">
+                        <Card className="flex flex-col items-center justify-center gap-4 border-dashed bg-gray-100 py-16 text-center dark:bg-[#171717]">
                             <CardContent className="flex flex-col items-center gap-4">
                                 <div className="text-lg font-semibold">
                                     Belum Ada Laporan
                                 </div>
-                                <p className="text-sm text-muted-foreground max-w-sm">
+                                <p className="max-w-sm text-sm text-muted-foreground">
                                     Saat ini belum ada laporan yang tersedia.
                                     Mulai dengan membuat laporan baru.
                                 </p>

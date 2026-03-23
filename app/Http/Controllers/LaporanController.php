@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Laporan\LaporanStoreRequest;
+use App\Http\Requests\Laporan\LaporanUpdateRequest;
 use Inertia\Inertia;
 use App\Models\Laporan;
 use App\Services\Laporan\LaporanService;
@@ -94,13 +95,13 @@ class LaporanController extends Controller
      */
     public function edit(Laporan $laporan)
     {
-        //
+        return Inertia::render('menu/laporan/edit-laporan', compact('laporan'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Laporan $laporan)
+    public function update(LaporanUpdateRequest $request, Laporan $laporan)
     {
         $this->service->update($laporan, $request->validated(), $request->file('file_laporan'));
 

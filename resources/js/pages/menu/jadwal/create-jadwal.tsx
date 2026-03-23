@@ -28,7 +28,7 @@ interface PropsCreateJadwal {
 }
 
 export default function CreateJadwal({ users }: PropsCreateJadwal) {
-    const { data, setData, post, processing, errors, isDirty } =
+    const { data, setData, post, processing, errors, isDirty, reset } =
         useForm<FormJadwalType>({
             judul_jadwal: '',
             deskripsi_jadwal: '',
@@ -47,10 +47,11 @@ export default function CreateJadwal({ users }: PropsCreateJadwal) {
             preserveScroll: true,
             preserveState: true,
             onSuccess: () => {
-                toast.success('sucess');
+                toast.success('Berhasil menambahkan jadwal.');
+                reset();
             },
             onError: (e) => {
-                console.log(e)
+                toast.error('Gagal menambahkan jadwal.')
             },
         });
     };

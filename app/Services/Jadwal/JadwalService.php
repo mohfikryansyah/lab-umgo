@@ -13,4 +13,12 @@ class JadwalService
             return Jadwal::create($data);
         });
     }
+
+    public function destroy(Jadwal $jadwal): void
+    {
+        DB::transaction(function () use ($jadwal) {
+
+            $jadwal->delete();
+        });
+    }
 }

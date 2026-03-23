@@ -167,7 +167,7 @@ export default function FormJadwal({ data, setData, errors, users }: Props) {
                             </ComboboxList>
                         </ComboboxContent>
                     </Combobox>
-                    <InputError message={errors.penanggung_jawab_id}></InputError>
+                    <InputError message={errors.penanggung_jawab_id}/>
                 </div>
             </div>
             <div className="">
