@@ -10,7 +10,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Footer() {
     return (
         <section className="relative bg-white p-6 text-white">
-            <div className="container mx-auto rounded-xl bg-sidebar p-6 shadow-xl">
+            <div className="mx-auto rounded-xl bg-sidebar p-6 shadow-xl">
                 <div className="grid border-b pb-6 lg:grid-cols-3">
                     <div className="flex gap-4">
                         <img
@@ -32,7 +32,7 @@ export default function Footer() {
                         <h1 className="font-bold">
                             Laboratorium Kesehatan UMGO
                         </h1>
-                        <ul className="mt-4">
+                        <ul className="mt-4 space-y-4">
                             <li>
                                 <a
                                     href="#beranda"

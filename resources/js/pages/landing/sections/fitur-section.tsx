@@ -62,8 +62,8 @@ export default function FiturSection() {
             <div className="container mx-auto px-4">
                 <div className="space-y-6 text-center">
                     <Heading
-                        classNameTitle="text-3xl text-yellow-400"
-                        classNameDescription="text-lg"
+                        classNameTitle="text-3xl lg:text-4xl font-bold text-[#243673]"
+                        classNameDescription="text-lg text-gray-600 max-w-3xl mx-auto"
                         title="Fitur Utama"
                         description="Sistem terintegrasi untuk mengelola seluruh aspek laboratorium kesehatan dengan efisien dan efektif"
                     />
