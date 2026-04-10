@@ -37,7 +37,7 @@ class JadwalController extends Controller
             )
             ->when(
                 $filter_Type,
-                fn($q) => $q->where('tipe', $filter_Type)
+                fn($q) => $q->where('status', $filter_Type)
             )
             ->with('penanggungJawab:id,name')
             ->orderBy($sortBy, $sortDir === 'asc' ? 'asc' : 'desc')
@@ -71,6 +71,7 @@ class JadwalController extends Controller
      */
     public function store(JadwalStoreRequest $request, JadwalService $service)
     {
+        // dd($request->all());
         $service->store($request->validated());
         return to_route('jadwal.index')->with('success', 'Berhasil menyimpan jadwal');
     }

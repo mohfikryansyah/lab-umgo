@@ -137,3 +137,17 @@ export interface Jadwal {
 export type ENUMStatus = 'Terjadwal' | 'Selesai';
 
 export type LaporanTipe = 'Harian' | 'Mingguan' | 'Bulanan' | 'Insiden';
+
+export type ENUMStatusAbsensi = 'Hadir' | 'Izin' | 'Sakit' | 'Alpa';
+
+export interface Absensi {
+    id: string;
+    staf: User;
+    waktu_masuk: string;
+    waktu_keluar: string | null;
+    tanggal_absen: Date;
+    keterangan: string | null;
+    status: ENUMStatusAbsensi;
+    created_at: string;
+    updated_at: string;
+}

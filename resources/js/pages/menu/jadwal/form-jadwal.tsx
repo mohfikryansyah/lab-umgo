@@ -10,7 +10,6 @@ import {
     ComboboxItem,
     ComboboxList,
     ComboboxTrigger,
-    ComboboxValue,
 } from '@/components/ui/combobox';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
@@ -30,6 +29,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { BreadcrumbItem, User } from '@/types';
 import { InertiaFormProps } from '@inertiajs/react';
+import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { Clock2Icon } from 'lucide-react';
 import { useState } from 'react';
@@ -55,19 +55,28 @@ interface Props {
 
 export default function FormJadwal({ data, setData, errors, users }: Props) {
     const [date, setDate] = useState<Date | undefined>(
-        new Date(new Date().getFullYear(), new Date().getMonth(), 12),
+        new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            new Date().getDate(),
+        ),
     );
 
-    const [time, setTime] = useState<string>('10:30:00');
+    const [time, setTime] = useState<string>('00:00:00');
 
     // Fungsi helper untuk merge tanggal + waktu
-    const mergeDateAndTime = (date: Date | undefined, timeStr: string) => {
-        if (!date) return undefined;
+    const mergeDateAndTime = (date?: Date, timeStr?: string) => {
+        if (!date || !timeStr) return '';
+
         const [hours, minutes, seconds] = timeStr.split(':').map(Number);
+
         const merged = new Date(date);
         merged.setHours(hours, minutes, seconds ?? 0);
-        return merged;
+
+        return format(merged, 'yyyy-MM-dd HH:mm:ss'); // ✅ sesuai kebutuhan kamu
     };
+
+    console.log(data);
     return (
         <div className="grid grid-cols-3 gap-5">
             <div className="col-span-2 space-y-4">
@@ -137,7 +146,6 @@ export default function FormJadwal({ data, setData, errors, users }: Props) {
                         onValueChange={(value) => {
                             setData('penanggung_jawab_id', Number(value));
                         }}
-                        
                     >
                         <ComboboxTrigger
                             render={
@@ -145,7 +153,13 @@ export default function FormJadwal({ data, setData, errors, users }: Props) {
                                     variant="outline"
                                     className="w-full justify-between font-normal"
                                 >
-                                    {data.penanggung_jawab_id ? users.find((user) => user.id === data.penanggung_jawab_id)?.name : 'Pilih penanggung jawab'}
+                                    {data.penanggung_jawab_id
+                                        ? users.find(
+                                              (user) =>
+                                                  user.id ===
+                                                  data.penanggung_jawab_id,
+                                          )?.name
+                                        : 'Pilih penanggung jawab'}
                                 </Button>
                             }
                         />
@@ -157,17 +171,14 @@ export default function FormJadwal({ data, setData, errors, users }: Props) {
                             <ComboboxEmpty>No items found.</ComboboxEmpty>
                             <ComboboxList>
                                 {(item) => (
-                                    <ComboboxItem
-                                        key={item.id}
-                                        value={item.id}
-                                    >
+                                    <ComboboxItem key={item.id} value={item.id}>
                                         {item.name}
                                     </ComboboxItem>
                                 )}
                             </ComboboxList>
                         </ComboboxContent>
                     </Combobox>
-                    <InputError message={errors.penanggung_jawab_id}/>
+                    <InputError message={errors.penanggung_jawab_id} />
                 </div>
             </div>
             <div className="">
@@ -180,10 +191,12 @@ export default function FormJadwal({ data, setData, errors, users }: Props) {
                                 selected={date}
                                 onSelect={(selectedDate) => {
                                     setDate(selectedDate);
-                                    setData(
-                                        'waktu',
-                                        mergeDateAndTime(selectedDate, time),
+
+                                    const result = mergeDateAndTime(
+                                        selectedDate,
+                                        time,
                                     );
+                                    if (result) setData('waktu', result);
                                 }}
                                 className="p-0 [--cell-size:--spacing(8)] md:[--cell-size:--spacing(9)]"
                                 captionLayout="dropdown"
@@ -204,17 +217,18 @@ export default function FormJadwal({ data, setData, errors, users }: Props) {
                                             id="time-from"
                                             type="time"
                                             step="1"
-                                            defaultValue="10:30:00"
+                                            value={time}
+                                            // defaultValue="10:30:00"
                                             onChange={(e) => {
                                                 const newTime = e.target.value;
                                                 setTime(newTime);
-                                                setData(
-                                                    'waktu',
-                                                    mergeDateAndTime(
-                                                        date,
-                                                        newTime,
-                                                    ),
+
+                                                const result = mergeDateAndTime(
+                                                    date,
+                                                    newTime,
                                                 );
+                                                if (result)
+                                                    setData('waktu', result);
                                             }}
                                             className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                                         />

@@ -14,9 +14,6 @@ class Jadwal extends Model
     protected $guarded = ['id'];
     protected $keyType = 'string';
     public $incrementing = false;
-    protected $casts = [
-        'waktu' => 'datetime',
-    ];
 
     public function penanggungJawab()
     {

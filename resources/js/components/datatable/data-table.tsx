@@ -16,7 +16,14 @@ import {
 } from '@tanstack/react-table';
 import * as React from 'react';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
@@ -32,12 +39,23 @@ interface DataTableProps<TData, TValue> {
         value: string;
         icon?: React.ComponentType<{ className?: string }>;
     }[];
+    showToolbar?: boolean;
 }
 
-export function DataTable<TData, TValue>({ columns, data, columnFilter, titleFilter, optionsFilter, children }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+    columns,
+    data,
+    columnFilter,
+    titleFilter,
+    optionsFilter,
+    children,
+    showToolbar = true,
+}: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = React.useState({});
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] =
+        React.useState<VisibilityState>({});
+    const [columnFilters, setColumnFilters] =
+        React.useState<ColumnFiltersState>([]);
     const [sorting, setSorting] = React.useState<SortingState>([]);
 
     const [globalFilter, setGlobalFilter] = React.useState('');
@@ -59,32 +77,51 @@ export function DataTable<TData, TValue>({ columns, data, columnFilter, titleFil
         onColumnVisibilityChange: setColumnVisibility,
         onGlobalFilterChange: setGlobalFilter,
         getFilteredRowModel: getFilteredRowModel(),
-        
+
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFacetedRowModel: getFacetedRowModel(),
         getFacetedUniqueValues: getFacetedUniqueValues(),
-        
+
         getCoreRowModel: getCoreRowModel(),
 
         globalFilterFn: 'includesString',
-
     });
 
     return (
         <div className="space-y-4">
-            <DataTableToolbar table={table} optionsFilter={optionsFilter} titleFilter={titleFilter} columnFilter={columnFilter}>
-                {children}
-            </DataTableToolbar>
+            {showToolbar && (
+                <DataTableToolbar
+                    table={table}
+                    optionsFilter={optionsFilter}
+                    titleFilter={titleFilter}
+                    columnFilter={columnFilter}
+                >
+                    {children}
+                </DataTableToolbar>
+            )}
             <div className="overflow-hidden rounded-xl">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id} className="bg-sidebar hover:bg-sidebar dark:bg-yellow-800">
+                            <TableRow
+                                key={headerGroup.id}
+                                className="bg-sidebar hover:bg-sidebar dark:bg-yellow-800"
+                            >
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id} colSpan={header.colSpan} className="text-white">
-                                            {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                                        <TableHead
+                                            key={header.id}
+                                            colSpan={header.colSpan}
+                                            className="text-white"
+                                        >
+                                            {header.isPlaceholder
+                                                ? null
+                                                : flexRender(
+                                                      header.column.columnDef
+                                                          .header,
+                                                      header.getContext(),
+                                                  )}
                                         </TableHead>
                                     );
                                 })}
@@ -96,17 +133,27 @@ export function DataTable<TData, TValue>({ columns, data, columnFilter, titleFil
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    data-state={row.getIsSelected() && 'selected'}
-                                    className="hover:bg-yellow-50 dark:hover:bg-slate-800/50 dark:bg-neutral-800 odd:bg-white even:bg-slate-50"
+                                    data-state={
+                                        row.getIsSelected() && 'selected'
+                                    }
+                                    className="odd:bg-white even:bg-slate-50 hover:bg-yellow-50 dark:bg-neutral-800 dark:hover:bg-slate-800/50"
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                                        <TableCell key={cell.id}>
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext(),
+                                            )}
+                                        </TableCell>
                                     ))}
                                 </TableRow>
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                <TableCell
+                                    colSpan={columns.length}
+                                    className="h-24 text-center"
+                                >
                                     Tidak ada data yang ditemukan.
                                 </TableCell>
                             </TableRow>

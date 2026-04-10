@@ -2,6 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\BHPStock;
+use App\Models\DataAlat;
+use App\Models\Peminjaman;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -50,6 +53,9 @@ class HandleInertiaRequests extends Middleware
                 'success' => session('success'),
                 'error'   => session('error'),
             ],
+            'totalBHPMenipis' => BHPStock::where('jumlah_stok', '<', 10)->count(),
+            'totalAlatRusak' => DataAlat::whereIn('kondisi_alat', ['Rusak Ringan', 'Rusak Berat'])->count(),
+            'totalPeminjamanAktif' => Peminjaman::where('status', 'Disetujui')->count(),
         ];
     }
 }

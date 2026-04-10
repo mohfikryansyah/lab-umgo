@@ -1,16 +1,20 @@
 <?php
 
-use Inertia\Inertia;
-use Laravel\Fortify\Features;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\AbsensiController;
-use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\BHP\BHPStockController;
 use App\Http\Controllers\BHP\PeminjamanBHPController;
 use App\Http\Controllers\DataAlat\DataAlatController;
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\Peminjaman\PeminjamanController;
+use App\Models\Absensi;
+use App\Models\Jadwal;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use Laravel\Fortify\Features;
 
 Route::get('/', function () {
     return Inertia::render('landing/pages', [
@@ -20,7 +24,19 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
+        $userID = Auth::user()->id;
+        $today = Carbon::today();
+        $jadwalHariIni = Jadwal::whereDate('waktu', $today)
+            ->where('status', 'Terjadwal')
+            ->first();
+        $absensiHariIni = Absensi::where('staf_id', $userID)
+            ->whereDate('waktu_masuk', $today)
+            ->exists();
+
+        return Inertia::render('menu/dashboard/pages', [
+            'praktikum' => $jadwalHariIni,
+            'absensiHariIni' => $absensiHariIni
+        ]);
     })->name('dashboard');
 
     Route::resource('absensi', AbsensiController::class);
@@ -30,8 +46,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
     Route::resource('laporan', LaporanController::class);
     Route::get('/laporan/{laporan}/view-document', [LaporanController::class, 'viewDocument'])->name('laporan.view-document');
-
-    // Route baru untuk serve file
     Route::get('/laporan/{laporan}/file', [LaporanController::class, 'serveFile'])->name('laporan.serve-file');
 
     Route::resource('notifikasi', NotifikasiController::class);

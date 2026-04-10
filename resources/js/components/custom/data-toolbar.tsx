@@ -84,7 +84,6 @@ export default function DataToolbar({
                 )}
             </div>
 
-            {/* Sort + Extra */}
             <div className="flex items-center gap-2">
                 <Select
                     value={sortValue}

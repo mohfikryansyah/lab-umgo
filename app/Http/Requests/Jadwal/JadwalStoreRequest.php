@@ -33,10 +33,10 @@ class JadwalStoreRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'waktu' => Carbon::parse($this->waktu, 'Asia/Makassar')->setTimezone('UTC'),
-        ]);
-    }
+    // protected function prepareForValidation(): void
+    // {
+    //     $this->merge([
+    //         'waktu' => Carbon::parse($this->waktu)->format('Y-m-d H:i:s'),
+    //     ]);
+    // }
 }

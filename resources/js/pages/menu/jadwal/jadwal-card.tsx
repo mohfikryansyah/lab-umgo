@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useDeleteWithToast } from '@/hooks/use-delete';
 import { cn } from '@/lib/utils';
-import { formatTanggalIndo2, getColorForStatusJadwal } from '@/pages/helpers/helper';
+import { formatTanggalIndo, formatTanggalIndo2, getColorForStatusJadwal } from '@/pages/helpers/helper';
 import { default as jadwalRoute } from '@/routes/jadwal';
 import { BreadcrumbItem, Jadwal } from '@/types';
 import { Link } from '@inertiajs/react';
@@ -64,7 +64,7 @@ export default function JadwalCard({ data }: { data: Jadwal }) {
                     <div className="space-y-2 text-xs text-muted-foreground">
                         <div className="flex items-center gap-1">
                             <Calendar className="size-4" />
-                            <p>{formatTanggalIndo2(data.waktu)}</p>
+                            <p>{formatTanggalIndo(data.waktu)}</p>
                         </div>
                         <div className="flex items-center gap-1">
                             <User className="size-4" />

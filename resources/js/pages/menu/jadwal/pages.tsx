@@ -75,11 +75,11 @@ export default function PAGEJadwal({ jadwals, filters }: JadwalIndexProps) {
                         sortOptions={[
                             {
                                 label: 'Terbaru',
-                                value: 'tanggal_melapor:desc',
+                                value: 'waktu:desc',
                             },
                             {
                                 label: 'Terlama',
-                                value: 'tanggal_melapor:asc',
+                                value: 'waktu:asc',
                             },
                         ]}
                         onSortChange={(sort_by, sort_dir) =>

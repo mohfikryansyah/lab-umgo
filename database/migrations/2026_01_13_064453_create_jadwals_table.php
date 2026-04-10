@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('judul_jadwal');
             $table->string('deskripsi_jadwal');
-            $table->timestamp('waktu');
+            $table->dateTime('waktu');
             $table->string('ruangan_jadwal');
             $table->enum('status', ['Terjadwal', 'Selesai']);
             $table->foreignId('penanggung_jawab_id')->constrained('users')->cascadeOnDelete();

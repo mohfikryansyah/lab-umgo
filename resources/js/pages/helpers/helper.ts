@@ -82,3 +82,18 @@ export function getFileType(path: string) {
 
     return 'unknown'
 }
+
+export function getColorForStatusAbsensi(status: string) {
+    switch (status) {
+        case 'Hadir':
+            return 'bg-green-500 text-green-100';
+        case 'Izin':
+            return 'bg-yellow-500 text-yellow-100';
+        case 'Sakit':
+            return 'bg-blue-500 text-blue-100';
+        case 'Alpa':
+            return 'bg-red-500 text-red-100';
+        default:
+            return 'bg-neutral-800 text-white';
+    }
+}
