@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import { Activity, HeartPulse, Hospital, Microscope, Stethoscope } from 'lucide-react';
 
 export const SatuanBHPStock = [
     { label: 'pcs', value: 'pcs' },
@@ -97,3 +98,31 @@ export function getColorForStatusAbsensi(status: string) {
             return 'bg-neutral-800 text-white';
     }
 }
+
+export const prodi = [
+        {
+            title: 'Keperawatan',
+            label: 'Keperawatan',
+            icon: Stethoscope
+        },
+        {
+            title: 'Kebidanan',
+            Label: 'Kebidanan',
+            icon: HeartPulse
+        },
+        {
+            title: 'Teknologi Laboratorium Medis',
+            label: 'Teknologi Laboratorium Medis',
+            icon: Microscope
+        },
+        {
+            title: 'Informatika Medis',
+            label: 'Informatika Medis',
+            icon: Hospital
+        },
+        {
+            title: 'D-IV Anestesi',
+            label: 'D-IV Anestesi',
+            icon: Activity,
+        }
+    ];

@@ -29,17 +29,37 @@ interface PropsEditJadwal {
 }
 
 export default function EditJadwal({ users, jadwal }: PropsEditJadwal) {
-    const { data, setData, patch, processing, errors, isDirty, reset } =
-        useForm<FormJadwalType>({
-            judul_jadwal: jadwal.judul_jadwal,
-            deskripsi_jadwal: jadwal.deskripsi_jadwal,
-            ruangan_jadwal: jadwal.ruangan_jadwal,
-            waktu: undefined,
-            penanggung_jawab_id: jadwal.penanggung_jawab_id,
-            status: jadwal.status as ENUMStatusJadwal,
-        });
+    const {
+        data,
+        setData,
+        patch,
+        processing,
+        errors,
+        isDirty,
+        reset,
+        transform,
+    } = useForm<FormJadwalType>({
+        judul_jadwal: jadwal.judul_jadwal,
+        deskripsi_jadwal: jadwal.deskripsi_jadwal,
+        ruangan_jadwal: jadwal.ruangan_jadwal,
+        waktu: undefined,
+        penanggung_jawab_id: jadwal.penanggung_jawab_id,
+        status: jadwal.status as ENUMStatusJadwal,
+    });
 
     const { flash } = usePage<SharedData>();
+
+    transform((data) => {
+        const transformedData: any = {
+            ...data,
+        };
+
+        if (!data.waktu) {
+            delete transformedData.waktu;
+        }
+
+        return transformedData;
+    });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -52,7 +72,7 @@ export default function EditJadwal({ users, jadwal }: PropsEditJadwal) {
                 reset();
             },
             onError: (e) => {
-                toast.error('Gagal menambahkan jadwal.')
+                toast.error('Gagal menambahkan jadwal.');
             },
         });
     };

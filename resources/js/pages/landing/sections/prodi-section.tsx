@@ -1,33 +1,8 @@
 import Heading from '@/components/heading';
-import { BreadcrumbItem } from '@/types';
+import { prodi } from '@/pages/helpers/helper';
 import { motion } from 'framer-motion';
-import { HeartPulse, Hospital, Microscope, Stethoscope } from 'lucide-react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-    },
-];
 
 export default function ProdiSection() {
-    const prodi = [
-        {
-            title: 'Keperawatan',
-        },
-        {
-            title: 'Kebidanan',
-        },
-        {
-            title: 'Teknologi Laboratorium Medis',
-        },
-        {
-            title: 'Informatika Medis',
-        },
-    ];
-
-    const icons = [Stethoscope, HeartPulse, Microscope, Hospital];
-
     return (
         <section
             id="prodi"
@@ -42,9 +17,9 @@ export default function ProdiSection() {
                         description="Melayani empat program studi kesehatan unggulan"
                     />
 
-                    <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    <div className="mx-auto grid w-full gap-6 md:grid-cols-2 lg:grid-cols-5">
                         {prodi.map((item, index) => {
-                            const Icon = icons[index % icons.length];
+                            const Icon = item.icon;
 
                             return (
                                 <motion.div
@@ -53,17 +28,14 @@ export default function ProdiSection() {
                                     transition={{ duration: 0.2 }}
                                     className="group relative overflow-hidden rounded-2xl border bg-white/70 p-6 shadow-md backdrop-blur-md transition-all hover:shadow-xl"
                                 >
-                                    {/* Glow effect */}
                                     <div className="absolute inset-0 bg-linear-to-r from-yellow-400/10 to-orange-500/10 opacity-0 transition group-hover:opacity-100" />
 
-                                    {/* Icon */}
                                     <div className="mb-4 flex justify-center">
                                         <div className="flex size-14 items-center justify-center rounded-full bg-linear-to-br from-yellow-400 to-orange-500 text-white shadow-lg">
                                             <Icon className="size-6" />
                                         </div>
                                     </div>
 
-                                    {/* Title */}
                                     <p className="text-base font-semibold text-gray-800 transition group-hover:text-yellow-600">
                                         {item.title}
                                     </p>

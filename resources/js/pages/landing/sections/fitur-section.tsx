@@ -10,13 +10,6 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-    },
-];
-
 export default function FiturSection() {
     const fitur = [
         {

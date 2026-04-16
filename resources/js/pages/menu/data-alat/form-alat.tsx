@@ -132,7 +132,7 @@ export default function FormAlat({
                             ))}
                         </SelectContent>
                     </Select>
-                    <InputError message={errors.satuan} />
+                    <InputError message={errors.kondisi_alat} />
                 </div>
             </div>
             <div className="grid w-full gap-2">

@@ -1,1 +1,0 @@
-import{c,r as i}from"./app-DVpmD9mT.js";function f(r,o){const t=c.c(3),s=i.useRef(null);let e;return t[0]!==r||t[1]!==o?(e=(...u)=>{const n=u;s.current&&clearTimeout(s.current),s.current=setTimeout(()=>{r(...n)},o)},t[0]=r,t[1]=o,t[2]=e):e=t[2],e}export{f as u};

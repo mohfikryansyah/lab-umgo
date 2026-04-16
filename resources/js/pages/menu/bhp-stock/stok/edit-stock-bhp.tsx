@@ -94,9 +94,9 @@ export default function EditStockBHP({ bhpstock }: EditStockBHPProps) {
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="m-0 cursor-pointer hover:bg-yellow-100"
+                    className="m-0 cursor-pointer bg-green-100 hover:bg-green-100"
                 >
-                    <Edit className="size-4 text-yellow-600" />
+                    <Edit className="size-4 text-green-600" />
                 </Button>
             </DialogTrigger>
             <DialogContent>

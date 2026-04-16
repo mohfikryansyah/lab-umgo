@@ -10,12 +10,12 @@ import { ColumnDef } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 // import EditStockAlat from './edit-stock-bhp';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import dataAlat from '@/routes/data-alat';
+import { Link } from '@inertiajs/react';
+import { Edit } from 'lucide-react';
 import { getColorForKondisiAlat } from './helpers';
 import ShowAlat from './show-alat';
-import EditAlat from './edit-alat';
-import { Link } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
 
 export const AlatColumns = (alats: Alat[]): ColumnDef<Alat>[] => [
     {
@@ -129,7 +129,12 @@ export const AlatColumns = (alats: Alat[]): ColumnDef<Alat>[] => [
                         key={row.original.id}
                     />
                     <Link href={dataAlat.edit(row.original.id)}>
-                        <Button size={'icon'}>Edit</Button>
+                        <Button
+                            size="icon"
+                            className="m-0 cursor-pointer bg-green-100 hover:bg-green-100"
+                        >
+                            <Edit className="size-4 text-green-600" />
+                        </Button>
                     </Link>
                 </div>
             );

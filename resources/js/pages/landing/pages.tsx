@@ -18,7 +18,6 @@ export default function LandingPage() {
     return (
         <LandingPageLayout>
             <HeroSection2/>
-            {/* <HeroSection/> */}
             <FiturSection/>
             <ProdiSection/>
         </LandingPageLayout>

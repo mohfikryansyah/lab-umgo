@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Jadwal\JadwalStoreRequest;
+use App\Http\Requests\Jadwal\JadwalUpdateRequest;
 use App\Models\Jadwal;
 use App\Models\User;
 use App\Services\Jadwal\JadwalService;
@@ -71,7 +72,6 @@ class JadwalController extends Controller
      */
     public function store(JadwalStoreRequest $request, JadwalService $service)
     {
-        // dd($request->all());
         $service->store($request->validated());
         return to_route('jadwal.index')->with('success', 'Berhasil menyimpan jadwal');
     }
@@ -89,15 +89,19 @@ class JadwalController extends Controller
      */
     public function edit(Jadwal $jadwal)
     {
-        //
+        $jadwal = $jadwal->load('penanggungJawab');
+        $users = User::latest()->get();
+        return Inertia::render('menu/jadwal/edit-jadwal', compact('jadwal', 'users'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Jadwal $jadwal)
+    public function update(JadwalUpdateRequest $request, Jadwal $jadwal, JadwalService $service)
     {
-        //
+        $service->update($jadwal, $request->validated());
+        
+        return to_route('jadwal.index')->with('success', 'Berhasil mengubah jadwal.');
     }
 
     /**

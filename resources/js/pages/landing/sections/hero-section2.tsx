@@ -9,16 +9,12 @@ export default function HeroSection2() {
             <img
                 src="/images/bg.jpg"
                 className="absolute -bottom-108 w-full opacity-10"
-                alt=""
+                alt="Background"
             />
-            {/* <BackgroundRippleEffect /> */}
             <div className="w-full space-y-6">
-                <div className="max-w-fit px-20 mx-auto bg-[linear-gradient(to_right,transparent,var(--color-muted)_30%,var(--color-muted)_70%,transparent)] py-2 text-center text-base shadow-xl font-semibold">
+                <div className="mx-auto max-w-fit bg-[linear-gradient(to_right,transparent,var(--color-muted)_30%,var(--color-muted)_70%,transparent)] px-20 py-2 text-center text-base font-semibold shadow-xl">
                     Universitas Muhammadiyah Gorontalo
                 </div>
-                {/* <div className="text-sm relative z-10 mx-auto max-w-fit rounded-full bg-gray-200 px-4 py-2 font-medium text-sky-800">
-                    Universitas Muhammadiyah Gorontalo
-                </div> */}
                 <h2 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-secondary md:text-4xl lg:text-7xl dark:text-neutral-100">
                     Laboratorium Kesehatan
                 </h2>

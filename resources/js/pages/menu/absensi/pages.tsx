@@ -24,8 +24,6 @@ export default function PAGEAbsensi({
 }: AbsensiPageProps) {
     const columns = AbsensiColumns(absensis);
 
-    console.log(filters);
-
     const updateFilters = useCallback(
         (partial: Record<string, unknown>) => {
             router.get(
@@ -70,7 +68,6 @@ export default function PAGEAbsensi({
                         showToolbar={false}
                     />
                 </div>
-                {praktikum && <ClockInCard praktikum={praktikum} />}
             </div>
         </AppLayout>
     );

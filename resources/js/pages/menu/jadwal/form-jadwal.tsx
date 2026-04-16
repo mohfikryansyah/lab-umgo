@@ -64,7 +64,6 @@ export default function FormJadwal({ data, setData, errors, users }: Props) {
 
     const [time, setTime] = useState<string>('00:00:00');
 
-    // Fungsi helper untuk merge tanggal + waktu
     const mergeDateAndTime = (date?: Date, timeStr?: string) => {
         if (!date || !timeStr) return '';
 
@@ -73,10 +72,9 @@ export default function FormJadwal({ data, setData, errors, users }: Props) {
         const merged = new Date(date);
         merged.setHours(hours, minutes, seconds ?? 0);
 
-        return format(merged, 'yyyy-MM-dd HH:mm:ss'); // ✅ sesuai kebutuhan kamu
+        return format(merged, 'yyyy-MM-dd HH:mm:ss');
     };
 
-    console.log(data);
     return (
         <div className="grid grid-cols-3 gap-5">
             <div className="col-span-2 space-y-4">

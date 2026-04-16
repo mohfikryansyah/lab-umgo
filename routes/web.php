@@ -3,6 +3,7 @@
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\BHP\BHPStockController;
 use App\Http\Controllers\BHP\PeminjamanBHPController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataAlat\DataAlatController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\LaporanController;
@@ -23,21 +24,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        $userID = Auth::user()->id;
-        $today = Carbon::today();
-        $jadwalHariIni = Jadwal::whereDate('waktu', $today)
-            ->where('status', 'Terjadwal')
-            ->first();
-        $absensiHariIni = Absensi::where('staf_id', $userID)
-            ->whereDate('waktu_masuk', $today)
-            ->exists();
-
-        return Inertia::render('menu/dashboard/pages', [
-            'praktikum' => $jadwalHariIni,
-            'absensiHariIni' => $absensiHariIni
-        ]);
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('absensi', AbsensiController::class);
     Route::resource('jadwal', JadwalController::class);

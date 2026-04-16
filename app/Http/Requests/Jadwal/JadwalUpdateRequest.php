@@ -27,7 +27,7 @@ class JadwalUpdateRequest extends FormRequest
             'judul_jadwal' => ['required', 'string', 'max:100'],
             'deskripsi_jadwal' => ['required', 'string', 'max:255'],
             'status' => ['required', Rule::in('Terjadwal', 'Selesai')],
-            'waktu' => ['required', 'date'],
+            'waktu' => ['sometimes', 'date'],
             'ruangan_jadwal' => ['required', 'string', 'max:100'],
             'penanggung_jawab_id' => ['required']
         ];

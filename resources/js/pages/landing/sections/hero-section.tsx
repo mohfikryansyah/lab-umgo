@@ -1,13 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { BreadcrumbItem } from '@/types';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-    },
-];
-
 export default function HeroSection() {
     return (
         <section className="relative h-[93vh] pt-20 pb-16 md:pt-32 md:pb-24 lg:pt-48 lg:pb-32">

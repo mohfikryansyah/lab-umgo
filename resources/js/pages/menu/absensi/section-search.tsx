@@ -9,6 +9,8 @@ import {
 } from '@/components/ui/select';
 import { useState } from 'react';
 
+import { prodi as OptionProdi } from '@/pages/helpers/helper';
+
 type SectionSearchProps = {
     defaultSearch?: string;
     onSearchChange?: (value: string) => void;
@@ -68,14 +70,14 @@ export default function SectionSearch({
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="all">Semua Program Studi</SelectItem>
-                        <SelectItem value="Kebidanan">Kebidanan</SelectItem>
-                        <SelectItem value="Keperawatan">Keperawatan</SelectItem>
-                        <SelectItem value="Teknologi Laboratorium Medis">
-                            Teknologi Laboratorium Medis
-                        </SelectItem>
-                        <SelectItem value="Informatika Medis">
-                            Informatika Medis
-                        </SelectItem>
+                        {OptionProdi.map((p, index) => {
+                            const Icon = p.icon;
+                            return (
+                                <SelectItem value={p.title} key={index}>
+                                    {p.label}
+                                </SelectItem>
+                            );
+                        })}
                     </SelectContent>
                 </Select>
             </div>
