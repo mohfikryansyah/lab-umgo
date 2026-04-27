@@ -22,7 +22,7 @@ class PeminjamanService
             $peminjaman = Peminjaman::create([
                 'user_id' => Auth::id(),
                 'tanggal_pinjam' => Carbon::now(),
-                'judul_praktikum' => $data['judul_praktikum'],
+                'jadwal_id' => $data['jadwal_id'],
             ]);
 
             foreach ($data['items'] as $item) {

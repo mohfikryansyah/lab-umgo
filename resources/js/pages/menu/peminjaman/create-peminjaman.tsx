@@ -11,7 +11,7 @@ import {
     PeminjamanFormData,
 } from '@/pages/menu/peminjaman/interface/peminjaman';
 import peminjaman from '@/routes/peminjaman';
-import { Alat, BHPStock } from '@/types';
+import { Alat, BHPStock, Jadwal } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import React from 'react';
 import toast from 'react-hot-toast';
@@ -20,11 +20,12 @@ import PeminjamanForm from './form-peminjaman';
 interface CreateProps {
     bhpstocks: BHPStock[];
     alats: Alat[];
+    jadwal_praktikum: Jadwal[];
 }
 
-export default function Create({ bhpstocks, alats }: CreateProps) {
+export default function Create({ bhpstocks, alats, jadwal_praktikum }: CreateProps) {
     const form = useForm<PeminjamanFormData>({
-        tanggal_pinjam: undefined,
+        // tanggal_pinjam: undefined,
         items: [
             {
                 item_type: 'bhp' as ItemType,
@@ -32,8 +33,10 @@ export default function Create({ bhpstocks, alats }: CreateProps) {
                 jumlah: 1,
             },
         ],
-        judul_praktikum: '',
+        jadwal_id: '',
     });
+
+    console.log(form.data);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -72,6 +75,7 @@ export default function Create({ bhpstocks, alats }: CreateProps) {
                             form={form}
                             bhpstocks={bhpstocks}
                             alats={alats}
+                            jadwal_praktikum={jadwal_praktikum}
                             onSubmit={handleSubmit}
                             submitLabel="Simpan Peminjaman"
                         />

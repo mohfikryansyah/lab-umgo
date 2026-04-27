@@ -16,8 +16,8 @@ export interface PeminjamanItemAddItem {
 }
 
 export interface PeminjamanFormData {
-  tanggal_pinjam: string | Date | undefined;
-  judul_praktikum: string;
+  // tanggal_pinjam: string | Date | undefined;
+  jadwal_id: string;
   items: PeminjamanItemAddItem[];
 }
 

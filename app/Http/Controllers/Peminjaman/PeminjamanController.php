@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Peminjaman;
 
-use Inertia\Inertia;
-use App\Models\BHPStock;
-use App\Models\Peminjaman;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Peminjaman\PeminjamanService;
 use App\Http\Requests\Peminjaman\PeminjamanStoreRequest;
 use App\Http\Requests\Peminjaman\PeminjamanUpdateRequest;
+use App\Models\BHPStock;
 use App\Models\DataAlat;
+use App\Models\Jadwal;
+use App\Models\Peminjaman;
+use App\Services\Peminjaman\PeminjamanService;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PeminjamanController extends Controller
 {
@@ -20,7 +21,7 @@ class PeminjamanController extends Controller
     public function index()
     {
         $bhpstocks = BHPStock::latest()->get();
-        $peminjaman = Peminjaman::with('user', 'items')->latest()->get();
+        $peminjaman = Peminjaman::with('user', 'items', 'jadwal')->latest()->get();
         $alats = DataAlat::get();
         return Inertia::render('menu/peminjaman/pages', compact('bhpstocks', 'peminjaman', 'alats'));
     }
@@ -32,7 +33,8 @@ class PeminjamanController extends Controller
     {
         $bhpstocks = BHPStock::latest()->get();
         $alats = DataAlat::latest()->get();
-        return Inertia::render('menu/peminjaman/create-peminjaman', compact('bhpstocks', 'alats'));
+        $jadwal_praktikum = Jadwal::get();
+        return Inertia::render('menu/peminjaman/create-peminjaman', compact('bhpstocks', 'alats', 'jadwal_praktikum'));
     }
 
     /**

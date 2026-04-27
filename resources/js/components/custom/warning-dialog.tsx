@@ -16,7 +16,7 @@ export default function WarningDialog({ title, description, onConfirm, isProcess
     return (
         <Dialog open={isOpenDialog} onOpenChange={setIsOpenDialog}>
             <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="">
+                <Button variant="destructive" size="sm" className="">
                     Tolak
                 </Button>
             </DialogTrigger>

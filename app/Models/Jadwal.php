@@ -19,4 +19,9 @@ class Jadwal extends Model
     {
         return $this->belongsTo(User::class, 'penanggung_jawab_id');
     }
+
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class, 'jadwal_id');
+    }
 }

@@ -16,18 +16,20 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { useInitials } from '@/hooks/use-initials';
 import { usePeminjamanAction } from '@/hooks/use-peminjaman-action';
-import peminjaman from '@/routes/peminjaman';
+import peminjamanRoute from '@/routes/peminjaman';
 import { Link, usePage } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { Eye } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { getColorForStatusPeminjaman } from '@/pages/helpers/helper';
 
 export const PeminjamanColumns = (
-    peminjaman_bhp: PeminjamanTypes[],
-    peminjaman_bhp_items: PeminjamanItemTypes[],
+    peminjaman: PeminjamanTypes[],
+    peminjaman_items: PeminjamanItemTypes[],
 ): ColumnDef<PeminjamanTypes>[] => [
     {
-        accessorKey: 'peminjaman_bhp.user.avatar',
+        accessorKey: 'peminjaman.user.avatar',
         header: 'Peminjam',
         cell: ({ row }) => {
             const getInitials = useInitials();
@@ -66,13 +68,28 @@ export const PeminjamanColumns = (
         },
     },
     {
-        accessorKey: 'judul_praktikum',
+        accessorKey: 'jadwal.judul_jadwal',
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Judul Praktikum" />
         ),
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id));
         },
+    },
+    {
+        accessorKey: 'status',
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Status" />
+        ),
+        filterFn: (row, id, value) => {
+            return value.includes(row.getValue(id));
+        },
+        cell: ({ row }) => {
+            const status = row.original.status;
+            return (
+                <Badge className={getColorForStatusPeminjaman(status)}>{status}</Badge>
+            )
+        }
     },
     {
         id: 'actions',
@@ -82,7 +99,7 @@ export const PeminjamanColumns = (
             const { deleteItem, isDeleting } = useDeleteWithToast();
 
             const handleDeleteRow = (peminjamanParams: PeminjamanTypes) => {
-                deleteItem(peminjaman.destroy(peminjamanParams.id));
+                deleteItem(peminjamanRoute.destroy(peminjamanParams.id));
             };
 
             const {
@@ -106,7 +123,7 @@ export const PeminjamanColumns = (
 
             return (
                 <div className="flex items-center gap-2">
-                    <Link href={peminjaman.show(row.original.id)}>
+                    <Link href={peminjamanRoute.show(row.original.id)}>
                         <Button
                             size={'icon'}
                             className="m-0 cursor-pointer bg-yellow-100 hover:bg-yellow-200"
@@ -142,7 +159,6 @@ export const PeminjamanColumns = (
                     {row.original.status === 'Disetujui' && (
                         <Button
                             size="sm"
-                            variant="destructive"
                             disabled={completeProcessing}
                             onClick={handleComplete}
                         >

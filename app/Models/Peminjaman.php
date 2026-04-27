@@ -29,4 +29,9 @@ class Peminjaman extends Model
     {
         return $this->hasMany(PeminjamanItem::class);
     }
+
+    public function jadwal()
+    {
+        return $this->belongsTo(Jadwal::class);
+    }
 }

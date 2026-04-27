@@ -23,7 +23,7 @@ class PeminjamanStoreRequest extends FormRequest
     {
         return [
             // 'tanggal_pinjam' => ['required', 'date'],
-            'judul_praktikum' => ['required', 'string'],
+            'jadwal_id' => ['required', 'exists:jadwals,id'],
 
             'items' => ['required', 'array', 'min:1'],
 

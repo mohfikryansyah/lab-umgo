@@ -1,4 +1,3 @@
-import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar_';
 import { Card, CardContent } from '@/components/ui/card';
@@ -25,23 +24,23 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import useBoolean from '@/hooks/use-boolean';
-import { cn } from '@/lib/utils';
-import { ItemType, PeminjamanItemAddItem } from '@/pages/menu/peminjaman/interface/peminjaman';
-import { Alat, BHPStock, PeminjamanItem } from '@/types';
+import {
+    ItemType,
+    PeminjamanItemAddItem,
+} from '@/pages/menu/peminjaman/interface/peminjaman';
+import { Alat, BHPStock, Jadwal, PeminjamanItem } from '@/types';
 import { InertiaFormProps } from '@inertiajs/react';
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
-import { CalendarIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface PeminjamanBhpFormProps {
     form: InertiaFormProps<{
-        tanggal_pinjam: string | Date | undefined;
+        // tanggal_pinjam: string | Date | undefined;
         items: PeminjamanItemAddItem[];
-        judul_praktikum: string;
+        jadwal_id: string;
     }>;
     bhpstocks: BHPStock[];
     alats: Alat[];
+    jadwal_praktikum: Jadwal[];
     onSubmit: (e: React.FormEvent) => void;
     submitLabel: string;
     isEdit?: boolean;
@@ -51,6 +50,7 @@ export default function PeminjamanForm({
     form,
     bhpstocks,
     alats,
+    jadwal_praktikum,
     onSubmit,
     submitLabel,
     isEdit = false,
@@ -135,6 +135,8 @@ export default function PeminjamanForm({
         setOpenPopovers((prev) => ({ ...prev, [index]: isOpen }));
     };
 
+    const isOpenJadwalPraktikum = useBoolean(false);
+
     return (
         <form onSubmit={onSubmit} className="space-y-6">
             {/* <div className="grid w-full gap-2">
@@ -199,6 +201,50 @@ export default function PeminjamanForm({
             </div> */}
 
             <div className="grid w-full gap-2">
+                <Label>Jadwal Praktikum</Label>
+                <Popover
+                    open={isOpenJadwalPraktikum.state}
+                    onOpenChange={isOpenJadwalPraktikum.setState}
+                >
+                    <PopoverTrigger asChild>
+                        <Button variant={'outline'}>
+                            {form.data.jadwal_id
+                                ? jadwal_praktikum.find(
+                                      (j) => j.id === form.data.jadwal_id,
+                                  )?.judul_jadwal
+                                : 'Pilih Jadwal Praktikum'}
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="popover-content p-0">
+                        <Command>
+                            <CommandInput placeholder="Cari Jadwal Praktikum" />
+                            <CommandEmpty>
+                                Tidak ada data yang ditemukan
+                            </CommandEmpty>
+                            <CommandList className="max-h-60 overflow-y-auto">
+                                {jadwal_praktikum.map((jadwal) => {
+                                    return (
+                                        <CommandItem
+                                            key={jadwal.id}
+                                            onSelect={() => {
+                                                form.setData(
+                                                    'jadwal_id',
+                                                    jadwal.id,
+                                                );
+                                                isOpenJadwalPraktikum.setFalse();
+                                            }}
+                                        >
+                                            {jadwal.judul_jadwal}
+                                        </CommandItem>
+                                    );
+                                })}
+                            </CommandList>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
+            </div>
+
+            {/* <div className="grid w-full gap-2">
                 <Label>Judul Praktikum</Label>
                 <Input
                     id="judul_praktikum"
@@ -208,7 +254,7 @@ export default function PeminjamanForm({
                     }
                 />
                 <InputError message={form.errors.judul_praktikum}/>
-            </div>
+            </div> */}
 
             <div>
                 <div className="mb-4 flex items-center justify-between">
@@ -382,7 +428,8 @@ export default function PeminjamanForm({
                                                     Jumlah Pinjam
                                                     {stockInfo && (
                                                         <span className="ml-2 text-gray-500">
-                                                            (Maksimal: {maxStock})
+                                                            (Maksimal:{' '}
+                                                            {maxStock})
                                                         </span>
                                                     )}
                                                 </Label>

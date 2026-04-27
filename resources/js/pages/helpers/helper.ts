@@ -99,6 +99,21 @@ export function getColorForStatusAbsensi(status: string) {
     }
 }
 
+export function getColorForStatusPeminjaman(status: string) {
+    switch (status) {
+        case 'Selesai':
+            return 'bg-green-500 text-green-100';
+        case 'Pending':
+            return 'bg-yellow-500 text-yellow-100';
+        case 'Disetujui':
+            return 'bg-blue-500 text-blue-100';
+        case 'Ditolak':
+            return 'bg-red-500 text-red-100';
+        default:
+            return 'bg-neutral-800 text-white';
+    }
+}
+
 export const prodi = [
         {
             title: 'Keperawatan',

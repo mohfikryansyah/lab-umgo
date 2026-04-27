@@ -53,6 +53,7 @@ export interface User {
 export interface Peminjaman {
     id: string;
     user_id: number;
+    jadwal: Jadwal;
     user: User;
     items: PeminjamanItem[];
     tanggal_pinjam: string;

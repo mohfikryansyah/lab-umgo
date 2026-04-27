@@ -39,6 +39,8 @@ export default function PAGEPeminjaman({
     alats: Alat[];
 }) {
     const columns = PeminjamanColumns(peminjaman, peminjaman_items);
+
+    console.log(peminjaman);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Peminjaman BHP" />
@@ -56,7 +58,8 @@ export default function PAGEPeminjaman({
                     <CardContent>
                         <DataTable columns={columns} data={peminjaman}>
                             <Link href={peminjamanRoute.create()}>
-                                <Button variant={'default'} className='bg-secondary text-gray-800 hover:bg-secondary/80 dark:bg-blue-900/50 dark:text-white'>
+                                <Button variant={'default'} className='bg-secondary text-gray-800 hover:bg-secondary/80 dark:bg-blue-900/50 dark:text-white
+                                '>
                                     Buat Peminjaman
                                 </Button>
                             </Link>
